@@ -1,0 +1,12 @@
+.home-screen {
+  text-align: center;
+  padding: 20px;
+}
+
+.home-screen h1 {
+  color: var(--primary-color); /* Sørg for, at farven er defineret i colors.css */
+}
+
+.home-screen p {
+  color: var(--text-color); /* Sørg for, at farven er defineret i colors.css */
+}

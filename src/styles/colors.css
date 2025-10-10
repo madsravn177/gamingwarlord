@@ -1,0 +1,9 @@
+/* colors.css */
+:root {
+  --primary-color: #4caf50; /* Grøn */
+  --secondary-color: #ff9800; /* Orange */
+  --background-color: #f4f4f4; /* Lys grå */
+  --text-color: #333; /* Mørk grå */
+  --header-color: #282c34; /* Mørk blågrå */
+  --border-color: #ddd; /* Lys grå til kanter */
+}

@@ -1,0 +1,12 @@
+.leaderboard-screen {
+  text-align: center;
+  padding: 20px;
+}
+
+.leaderboard-screen h1 {
+  color: var(--secondary-color); /* Bruger farve fra colors.css */
+}
+
+.leaderboard-screen p {
+  color: var(--text-color); /* Bruger farve fra colors.css */
+}

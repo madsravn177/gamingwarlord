@@ -1,23 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./styles/global.css"; // Globale styles
+import "./styles/colors.css"; // Farver
+import HomeScreen from "./screens/Home/HomeScreen"; // Import HomeScreen
+import LeaderboardScreen from "./screens/Leaderboard/LeaderboardScreen"; // Import LeaderboardScreen
 
 function App() {
+  console.log("App is rendering");
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <HomeScreen />
+      <LeaderboardScreen />
     </div>
   );
 }
