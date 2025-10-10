@@ -1,10 +1,18 @@
 /* global.css */
+/* Reset styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -14,11 +22,43 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: #007bff;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
 }

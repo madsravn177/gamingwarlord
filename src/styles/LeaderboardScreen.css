@@ -1,11 +1,16 @@
 .leaderboard-screen {
   padding: 20px;
   font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 50px auto;
+  text-align: center;
 }
 
 .leaderboard-screen h1 {
   text-align: center;
   color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .leaderboard-screen ul {
@@ -15,7 +20,11 @@
 
 .leaderboard-screen li {
   margin: 10px 0;
-  font-size: 18px;
+  font-size: 1.2rem;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .leaderboard-screen p {

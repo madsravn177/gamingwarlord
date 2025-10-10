@@ -1,4 +1,9 @@
 .dashboard-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   text-align: center;
   padding: 20px;
 }
@@ -15,4 +20,14 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.dashboard-screen h1 {
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.dashboard-screen p {
+  font-size: 1.2rem;
+  color: #666;
 }
