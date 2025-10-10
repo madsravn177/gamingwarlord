@@ -4,7 +4,17 @@
 }
 
 .leaderboard-screen h1 {
-  color: var(--secondary-color); /* Bruger farve fra colors.css */
+  color: var(--primary-color);
+}
+
+.leaderboard-screen ul {
+  list-style: none;
+  padding: 0;
+}
+
+.leaderboard-screen li {
+  margin: 10px 0;
+  font-size: 18px;
 }
 
 .leaderboard-screen p {

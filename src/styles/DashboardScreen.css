@@ -1,0 +1,18 @@
+.dashboard-screen {
+  text-align: center;
+  padding: 20px;
+}
+
+.dashboard-screen input {
+  margin: 10px;
+  padding: 5px;
+}
+
+.dashboard-screen button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
