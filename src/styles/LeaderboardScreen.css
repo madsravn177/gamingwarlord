@@ -1,10 +1,11 @@
 .leaderboard-screen {
-  text-align: center;
   padding: 20px;
+  font-family: Arial, sans-serif;
 }
 
 .leaderboard-screen h1 {
-  color: var(--primary-color);
+  text-align: center;
+  color: #333;
 }
 
 .leaderboard-screen ul {
@@ -19,4 +20,16 @@
 
 .leaderboard-screen p {
   color: var(--text-color); /* Bruger farve fra colors.css */
+}
+
+.leaderboard-item {
+  margin: 10px 0;
+  font-size: 18px;
+  color: #555;
+}
+
+.gaming-warlord {
+  font-weight: bold;
+  color: gold;
+  font-size: 20px;
 }

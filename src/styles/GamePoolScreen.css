@@ -1,0 +1,64 @@
+.game-pool-screen {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.game-pool-screen h1 {
+  text-align: center;
+  color: #333;
+}
+
+.game-pool-screen ul {
+  list-style: none;
+  padding: 0;
+}
+
+.game-pool-screen li {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.complete-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.complete-button:hover {
+  background-color: #45a049;
+}
+
+.completed-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ccc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: not-allowed;
+}
+
+.game-pool-screen select {
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.game-pool-screen button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.game-pool-screen button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
