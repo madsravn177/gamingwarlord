@@ -12,24 +12,11 @@ const firebaseConfig = {
   messagingSenderId: "295966434753",
   appId: "1:295966434753:web:03d96780118956832dfb40"
 };
-
-// Initialize Firebase
+// Initialiser Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore
+// Initialiser Firestore
 const db = getFirestore(app);
 
-export { app, db }; // Eksporter både app og Firestoreimport { collection, addDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
-
-async function addUser() {
-  try {
-    const docRef = await addDoc(collection(db, "users"), {
-      name: "John Doe",
-      score: 100
-    });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
-}
+// Eksporter app og db
+export { app, db };

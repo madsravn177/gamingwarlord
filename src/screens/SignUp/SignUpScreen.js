@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
+import { collection, getDocs, query, where, doc, setDoc } from "firebase/firestore";
 import bcrypt from "bcryptjs";
+import { db } from "../../firebase/firebaseConfig";
+import { Link } from "react-router-dom";
 
 function SignUpScreen() {
   const [username, setUsername] = useState("");
@@ -14,12 +15,25 @@ function SignUpScreen() {
     }
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 10); // Hash adgangskoden
+      // Tjek, om brugernavnet allerede findes
+      const q = query(collection(db, "users"), where("username", "==", username));
+      const querySnapshot = await getDocs(q);
 
-      await addDoc(collection(db, "users"), {
+      if (!querySnapshot.empty) {
+        alert("Username already exists. Please choose another one.");
+        return;
+      }
+
+      // Hash adgangskoden
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Opret en ny bruger i Firestore
+      await setDoc(doc(db, "users", username), {
         username: username,
         password: hashedPassword,
-        score: 0
+        score: 0, // Start med 0 point
+        createdAt: new Date(), // Tidspunkt for oprettelse
+        type: "user" // Standard brugerrolle
       });
 
       alert("User registered successfully!");
@@ -47,6 +61,9 @@ function SignUpScreen() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleSignUp}>Sign Up</button>
+      <p>
+        Already have an account? <Link to="/">Login here</Link>
+      </p>
     </div>
   );
 }

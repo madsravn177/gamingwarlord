@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
 import bcrypt from "bcryptjs";
+import { db } from "../../firebase/firebaseConfig";
+import { Link, useNavigate } from "react-router-dom"; // Importér useNavigate
 
 function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // Initialiser useNavigate
 
   const handleLogin = async () => {
     if (!username || !password) {
@@ -14,6 +16,7 @@ function LoginScreen() {
     }
 
     try {
+      // Hent brugerdata fra Firestore
       const q = query(collection(db, "users"), where("username", "==", username));
       const querySnapshot = await getDocs(q);
 
@@ -22,8 +25,9 @@ function LoginScreen() {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (isPasswordValid) {
-          alert("Login successful!");
-          // Her kan du gemme brugerens session eller navigere til en anden side
+          alert(`Welcome, ${user.username}! Your score is ${user.score}.`);
+          console.log("Navigating to /home");
+          navigate("/home"); // Naviger til HomeScreen
         } else {
           alert("Invalid username or password.");
         }
@@ -31,7 +35,7 @@ function LoginScreen() {
         alert("Invalid username or password.");
       }
     } catch (error) {
-      console.error("Error logging in: ", error);
+      console.error("Error logging in:", error);
       alert("Error logging in.");
     }
   };
@@ -52,6 +56,9 @@ function LoginScreen() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleLogin}>Login</button>
+      <p>
+        Don't have an account? <Link to="/signup">Sign up here</Link>
+      </p>
     </div>
   );
 }
