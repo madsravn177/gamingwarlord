@@ -25,9 +25,8 @@ function LoginScreen() {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (isPasswordValid) {
-          alert(`Welcome, ${user.username}! Your score is ${user.score}.`);
           console.log("Navigating to /home");
-          navigate("/home"); // Naviger til HomeScreen
+          navigate("/home"); // Naviger direkte til HomeScreen
         } else {
           alert("Invalid username or password.");
         }
@@ -36,7 +35,6 @@ function LoginScreen() {
       }
     } catch (error) {
       console.error("Error logging in:", error);
-      alert("Error logging in.");
     }
   };
 
