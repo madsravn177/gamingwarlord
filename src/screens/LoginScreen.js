@@ -22,8 +22,11 @@ function LoginScreen() {
         // Tjek, om adgangskoden matcher
         if (userData.password === password) {
           localStorage.setItem("username", username); // Gem brugernavn i localStorage
-          alert("Login successful!");
-          navigate("/"); // Naviger til HomeScreen
+
+          // Sørg for at navigere korrekt
+          console.log("Navigating to HomeScreen...");
+          navigate("/", { replace: true }); // Naviger til HomeScreen uden at tilføje til historikken
+          window.dispatchEvent(new Event("storage")); // Tving opdatering af tilstand
         } else {
           alert("Invalid password. Please try again."); // Forkert adgangskode
         }

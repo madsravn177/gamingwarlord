@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import "./styles/global.css";
 import Navbar from "./components/Navbar";
@@ -10,7 +10,17 @@ import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem("username"); // Tjek, om brugeren er logget ind
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("username"));
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem("username"));
+    };
+
+    // Overvåg ændringer i localStorage
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <Router>
