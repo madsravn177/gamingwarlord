@@ -6,6 +6,7 @@
   height: 100vh;
   text-align: center;
   padding: 20px;
+  margin-top: 0; /* Fjern unødvendigt mellemrum */
 }
 
 .dashboard-screen input {
@@ -30,4 +31,97 @@
 .dashboard-screen p {
   font-size: 1.2rem;
   color: #666;
+}
+
+.add-game {
+  margin-top: 10px; /* Reducer mellemrummet over sektionen */
+}
+
+.add-game h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px; /* Reducer mellemrummet under overskriften */
+}
+
+.add-game form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Reducer mellemrummet mellem felterne */
+}
+
+/* Styling til eksisterende spil */
+.existing-games {
+  margin-top: 20px;
+}
+
+.existing-games h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #ff9800; /* Neon-orange accent */
+}
+
+.games-table {
+  width: 100%; /* Gør tabellen bredere */
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.games-table th,
+.games-table td {
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  padding: 10px;
+  text-align: center;
+  color: #e0e0e0; /* Lys tekst */
+}
+
+.games-table th {
+  background-color: #1f1f1f; /* Mørk baggrund */
+  font-weight: bold;
+}
+
+.games-table tr:nth-child(even) {
+  background-color: #2a2a2a; /* Alternativ baggrundsfarve */
+}
+
+.games-table tr:hover {
+  background-color: #333333; /* Lysere baggrund ved hover */
+}
+
+.existing-games ul {
+  list-style: none;
+  padding: 0;
+}
+
+.existing-games li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 8px;
+  color: #e0e0e0; /* Lys tekst */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.existing-games li:hover {
+  background-color: #2a2a2a; /* Lysere baggrund ved hover */
+  transform: scale(1.02); /* Lidt større ved hover */
+}
+
+/* Styling til View Leaderboard-knappen */
+.view-leaderboard-button {
+  padding: 8px 15px;
+  background-color: #00bcd4; /* Neon-blå baggrund */
+  color: #121212; /* Mørk tekst */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-leaderboard-button:hover {
+  background-color: #26c6da; /* Lysere blå ved hover */
+  transform: scale(1.05); /* Lidt større ved hover */
 }

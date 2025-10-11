@@ -8,85 +8,84 @@ function HomeScreen() {
   const [warlord, setWarlord] = useState(null);
   const [recentActivities, setRecentActivities] = useState([]);
 
-  // Hent den nuværende Gaming Warlord
+  // Hent den nuværende nummer 1 på Overall Leaderboard
   useEffect(() => {
     const fetchWarlord = async () => {
-      const usersRef = collection(db, "users");
-      const q = query(usersRef, orderBy("score", "desc"), limit(1));
-      const querySnapshot = await getDocs(q);
+      try {
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, orderBy("totalPoints", "desc"), limit(1)); // Sorter efter totalPoints og hent den øverste
+        const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        const topUser = querySnapshot.docs[0].data();
-        setWarlord(topUser);
+        if (!querySnapshot.empty) {
+          const topUser = querySnapshot.docs[0].data();
+          setWarlord(topUser);
+        }
+      } catch (error) {
+        console.error("Error fetching the current warlord:", error);
       }
     };
 
     fetchWarlord();
   }, []);
 
-  // Hent brugerens seneste aktiviteter
+  // Hent de sidste 5 gennemførte spil
   useEffect(() => {
     const fetchRecentActivities = async () => {
-      const activitiesRef = collection(db, "activities"); // Antager, at du har en "activities"-collection
-      const q = query(activitiesRef, orderBy("timestamp", "desc"), limit(5));
-      const querySnapshot = await getDocs(q);
+      try {
+        const resultsRef = collection(db, "gameResults");
+        const q = query(resultsRef, orderBy("timestamp", "desc"), limit(5)); // Sorter efter timestamp og hent de seneste 5
+        const querySnapshot = await getDocs(q);
 
-      const activities = querySnapshot.docs.map((doc) => doc.data());
-      setRecentActivities(activities);
+        const activities = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setRecentActivities(activities);
+      } catch (error) {
+        console.error("Error fetching recent activities:", error);
+      }
     };
 
     fetchRecentActivities();
   }, []);
 
+  // Konverter tid fra sekunder til timer:minutter
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   return (
     <div className="home-screen">
       <h1>Welcome, {username}!</h1>
-      <p>Select a page from the navigation bar above.</p>
+      {warlord ? (
+        <div className="warlord-section">
+          <h2>Current Gaming Warlord</h2>
+          <p>
+            <strong>{warlord.username}</strong> with <strong>{warlord.totalPoints}</strong> points!
+          </p>
+        </div>
+      ) : (
+        <p>Loading current Gaming Warlord...</p>
+      )}
 
-      {/* Gaming Warlord Sektion */}
-      <div className="warlord-section">
-        <h2>Current Gaming Warlord</h2>
-        {warlord ? (
-          <div>
-            <p>
-              <strong>{warlord.username}</strong> with <strong>{warlord.score}</strong> points!
-            </p>
-          </div>
+      <div className="recent-activities-section">
+        <h2>De sidste 5 gennemførte spil</h2>
+        {recentActivities.length === 0 ? (
+          <p>Ingen gennemførte spil fundet.</p>
         ) : (
-          <p>Loading...</p>
-        )}
-      </div>
-
-      {/* Seneste aktiviteter */}
-      <div className="recent-activities">
-        <h2>Your Recent Activities</h2>
-        {recentActivities.length > 0 ? (
           <ul>
-            {recentActivities.map((activity, index) => (
-              <li key={index}>
-                {activity.description} - {new Date(activity.timestamp?.toDate()).toLocaleString()}
+            {recentActivities.map((activity) => (
+              <li key={activity.id}>
+                <strong>Game:</strong> {activity.gameName || "Unknown Game"} -{" "}
+                <strong>Time:</strong> {formatTime(activity.time)} -{" "}
+                <strong>Completed by:</strong> {activity.username}
               </li>
             ))}
           </ul>
-        ) : (
-          <p>No recent activities found.</p>
         )}
-      </div>
-
-      {/* Hurtige links */}
-      <div className="quick-links">
-        <h2>Quick Links</h2>
-        <ul>
-          <li>
-            <a href="/leaderboard">View Leaderboard</a>
-          </li>
-          <li>
-            <a href="/dashboard">Go to Dashboard</a>
-          </li>
-          <li>
-            <a href="/gamepool">Explore Game Pool</a>
-          </li>
-        </ul>
       </div>
     </div>
   );

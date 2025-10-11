@@ -1,10 +1,13 @@
 .game-leaderboard-screen {
   padding: 20px;
+  text-align: center;
 }
 
 .game-leaderboard-screen h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  color: #00bcd4; /* Neon-blå accent */
+  text-shadow: 2px 2px 5px rgba(0, 188, 212, 0.5); /* Glød-effekt */
 }
 
 .game-leaderboard-screen ul {
@@ -15,8 +18,25 @@
 .game-leaderboard-screen li {
   font-size: 1.2rem;
   margin: 10px 0;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  padding: 15px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  border: 1px solid #00bcd4; /* Neon-blå kant */
+  border-radius: 8px;
+  color: #e0e0e0; /* Lys tekst */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.game-leaderboard-screen li:hover {
+  background-color: #2a2a2a; /* Lysere baggrund ved hover */
+  transform: scale(1.02); /* Lidt større ved hover */
+}
+
+.game-leaderboard-screen .time {
+  font-size: 1rem;
+  color: #ff9800; /* Neon-orange for tid */
+}
+
+.game-leaderboard-screen .points {
+  font-size: 1rem;
+  color: #4caf50; /* Grøn for point */
 }

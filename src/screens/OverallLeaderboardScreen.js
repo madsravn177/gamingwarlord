@@ -16,8 +16,21 @@ function OverallLeaderboardScreen() {
       const usersRef = collection(db, "users");
       const querySnapshot = await getDocs(usersRef);
 
-      const usersData = querySnapshot.docs.map((doc) => doc.data());
-      const sortedUsers = usersData.sort((a, b) => b.totalPoints - a.totalPoints); // Sorter efter samlede point
+      const usersData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        totalPoints: Number(doc.data().totalPoints || 0), // Sørg for, at totalPoints er et tal
+      }));
+
+      // Debugging: Log data for at sikre, at `totalPoints` findes og er et tal
+      console.log("Fetched users:", usersData);
+
+      // Sorter brugerne efter `totalPoints` i faldende rækkefølge
+      const sortedUsers = usersData.sort((a, b) => b.totalPoints - a.totalPoints);
+
+      // Debugging: Log sorteret data
+      console.log("Sorted users:", sortedUsers);
+
       setUsers(sortedUsers);
     } catch (error) {
       console.error("Error fetching overall leaderboard:", error);
@@ -32,7 +45,7 @@ function OverallLeaderboardScreen() {
       ) : (
         <ul>
           {users.map((user, index) => (
-            <li key={index}>
+            <li key={user.id}>
               {index + 1}. {user.username} - {user.totalPoints} points
             </li>
           ))}

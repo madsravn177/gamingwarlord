@@ -1,10 +1,12 @@
 .user-completed-games-screen {
   padding: 20px;
+  text-align: center;
 }
 
 .user-completed-games-screen h1 {
   font-size: 2rem;
   margin-bottom: 20px;
+  color: #ff9800;
 }
 
 .user-completed-games-screen ul {
@@ -19,4 +21,31 @@
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.completed-games-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.completed-games-table th,
+.completed-games-table td {
+  border: 1px solid #ff9800;
+  padding: 10px;
+  text-align: center;
+  color: #e0e0e0;
+}
+
+.completed-games-table th {
+  background-color: #1f1f1f;
+  font-weight: bold;
+}
+
+.completed-games-table tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+.completed-games-table tr:hover {
+  background-color: #333333;
 }

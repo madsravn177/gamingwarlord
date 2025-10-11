@@ -1,11 +1,15 @@
 .game-pool-screen {
   padding: 20px;
   font-family: Arial, sans-serif;
+  text-align: center;
 }
 
 .game-pool-screen h1 {
   text-align: center;
   color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800;
 }
 
 .game-pool-screen ul {
@@ -46,6 +50,11 @@
   margin: 10px 0;
   padding: 5px;
   font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+  background-color: #1f1f1f;
+  color: #e0e0e0;
 }
 
 .game-pool-screen button {
@@ -56,6 +65,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .game-pool-screen button:disabled {
@@ -80,4 +90,13 @@
 .gamepool-screen p {
   font-size: 1.2rem;
   color: #666;
+}
+
+.game-pool-screen input {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+  background-color: #1f1f1f;
+  color: #e0e0e0;
 }

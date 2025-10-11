@@ -49,9 +49,12 @@ function DashboardScreen() {
     }
   };
 
+  const handleViewLeaderboard = (gameId) => {
+    navigate(`/leaderboard/${gameId}`);
+  };
+
   return (
     <div className="dashboard-screen">
-      <h1>Dashboard</h1>
 
       {/* Tilføj nyt spil */}
       <div className="add-game">
@@ -82,22 +85,33 @@ function DashboardScreen() {
       </div>
 
       {/* Liste over spil */}
-      <div className="game-list">
+      <div className="existing-games">
         <h2>Existing Games</h2>
-        {games.length === 0 ? (
-          <p>No games available.</p>
-        ) : (
-          <ul>
+        <table className="games-table">
+          <thead>
+            <tr>
+              <th>Game Name</th>
+              <th>Difficulty</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
             {games.map((game) => (
-              <li key={game.id}>
-                <strong>{game.name}</strong> - Difficulty: {game.difficulty}
-                <button onClick={() => navigate(`/leaderboard/${game.id}`)}>
-                  View Leaderboard
-                </button>
-              </li>
+              <tr key={game.id}>
+                <td>{game.name}</td>
+                <td>{game.difficulty}</td>
+                <td>
+                  <button
+                    className="view-leaderboard-button"
+                    onClick={() => handleViewLeaderboard(game.id)}
+                  >
+                    View Leaderboard
+                  </button>
+                </td>
+              </tr>
             ))}
-          </ul>
-        )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

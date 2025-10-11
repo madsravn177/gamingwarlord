@@ -2,14 +2,19 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
 
-function Navbar() {
+function Navbar({ isAuthenticated, setIsAuthenticated }) {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
+  const username = localStorage.getItem("username");
 
   const handleLogout = () => {
     localStorage.removeItem("username"); // Fjern brugernavn fra localStorage
+    setIsAuthenticated(false); // Opdater isAuthenticated til false
     navigate("/login"); // Naviger til login-siden
   };
+
+  if (!isAuthenticated) {
+    return null; // Skjul Navbar, hvis brugeren ikke er autentificeret
+  }
 
   return (
     <nav className="navbar">
@@ -18,10 +23,10 @@ function Navbar() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/dashboard">Game Leaderboard</Link>
         </li>
         <li>
-          <Link to="/gamepool">Game Pool</Link>
+          <Link to="/gamepool">Complete Game</Link>
         </li>
         <li>
           <Link to="/completed-games">Completed Games</Link>
@@ -32,7 +37,7 @@ function Navbar() {
       </ul>
       <div className="navbar-user">
         <span>
-          Logged in as: <strong>{username}</strong>
+          <strong>{username}</strong>
         </span>
         <button className="logout-button" onClick={handleLogout}>
           Logout

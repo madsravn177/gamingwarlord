@@ -13,38 +13,34 @@ function UserCompletedGamesScreen() {
   // Hent alle gennemførte spil og match med spilnavne
   const fetchCompletedGames = async () => {
     try {
-      // Hent alle spil
+      // Hent alle spil fra `games`-collectionen
       const gamesSnapshot = await getDocs(collection(db, "games"));
       const gamesData = gamesSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      // Hent alle resultater
+      // Hent alle resultater fra `gameResults`-collectionen
       const resultsSnapshot = await getDocs(collection(db, "gameResults"));
-      const resultsData = resultsSnapshot.docs.map((doc) => doc.data());
+      const resultsData = resultsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
       // Match resultater med spilnavne og beregn point
       const combinedData = resultsData.map((result) => {
         const game = gamesData.find((g) => g.id === result.gameId);
-        const difficulty = game ? game.difficulty : 1;
-
-        // Beregn point baseret på placering
-        const basePoints = [25, 18, 12, 10, 8, 6]; // Point for placeringer
-        const placement = resultsData
-          .filter((r) => r.gameId === result.gameId)
-          .sort((a, b) => a.time - b.time)
-          .findIndex((r) => r.username === result.username) + 1;
-        const points = basePoints[placement - 1] ? basePoints[placement - 1] * difficulty : 0;
-
         return {
           ...result,
           gameName: game ? game.name : "Unknown Game",
-          points,
+          points: result.points || 0, // Brug `points` fra resultaterne
         };
       });
 
-      setCompletedGames(combinedData);
+      // Sortér spillene efter timestamp i faldende rækkefølge (seneste først)
+      const sortedGames = combinedData.sort((a, b) => b.timestamp - a.timestamp);
+
+      setCompletedGames(sortedGames);
     } catch (error) {
       console.error("Error fetching completed games:", error);
     }
@@ -63,13 +59,26 @@ function UserCompletedGamesScreen() {
       {completedGames.length === 0 ? (
         <p>No games have been completed yet.</p>
       ) : (
-        <ul>
-          {completedGames.map((game, index) => (
-            <li key={index}>
-              <strong>Game:</strong> {game.gameName} - <strong>Time:</strong> {formatTime(game.time)} - <strong>Points:</strong> {game.points} - <strong>Completed by:</strong> {game.username}
-            </li>
-          ))}
-        </ul>
+        <table className="completed-games-table">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Time</th>
+              <th>Points</th>
+              <th>Completed By</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedGames.map((game, index) => (
+              <tr key={index}>
+                <td>{game.gameName}</td>
+                <td>{formatTime(game.time)}</td>
+                <td>{game.points}</td>
+                <td>{game.username}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

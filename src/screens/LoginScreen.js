@@ -40,32 +40,30 @@ function LoginScreen() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <label>
-          Username:
+    <div className="login-screen">
+      <div className="login-container">
+        <h1>Login</h1>
+        <form onSubmit={handleLogin}>
           <input
             type="text"
+            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password:
           <input
             type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-      <p>
-        Don't have an account? <a href="/signup">Sign Up</a>
-      </p>
+          <button type="submit">Login</button>
+        </form>
+        <p>
+          Don't have an account? <a href="/signup">Sign Up</a>
+        </p>
+      </div>
     </div>
   );
 }

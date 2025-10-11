@@ -1,0 +1,78 @@
+/* Sign Up-skærm styling */
+.signup-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Fyld hele højden af vinduet */
+  background-color: #121212; /* Mørk baggrund */
+  color: #e0e0e0; /* Lys tekst */
+  margin: 0; /* Fjern margin for at undgå konflikter */
+}
+
+.signup-container {
+  width: 100%;
+  max-width: 400px; /* Maksimal bredde for formularen */
+  background-color: #1f1f1f; /* Mørk grå baggrund */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Blød skygge */
+  text-align: center;
+}
+
+.signup-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800; /* Neon-orange accent */
+}
+
+.signup-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Mellemrum mellem felterne */
+}
+
+.signup-container input {
+  padding: 10px;
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 5px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  color: #e0e0e0; /* Lys tekst */
+  font-size: 1rem;
+}
+
+.signup-container input:focus {
+  outline: none;
+  border-color: #ffc107; /* Lysere orange ved fokus */
+}
+
+.signup-container button {
+  padding: 10px 20px;
+  background-color: #ff9800; /* Neon-orange baggrund */
+  color: #121212; /* Mørk tekst */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.signup-container button:hover {
+  background-color: #ffc107; /* Lysere orange ved hover */
+  transform: scale(1.05); /* Lidt større ved hover */
+}
+
+.signup-container p {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+.signup-container a {
+  color: #00bcd4; /* Neon-blå link */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.signup-container a:hover {
+  color: #26c6da; /* Lysere blå ved hover */
+}

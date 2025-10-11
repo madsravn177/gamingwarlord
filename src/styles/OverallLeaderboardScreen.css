@@ -1,10 +1,24 @@
-.overall-leaderboard-screen {
+.leaderboard-screen, .overall-leaderboard-screen {
   padding: 20px;
+  text-align: center;
+}
+
+.leaderboard-screen h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800;
 }
 
 .overall-leaderboard-screen h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  color: #ff9800; /* Neon-orange accent */
+  text-shadow: 2px 2px 5px rgba(255, 152, 0, 0.5); /* Glød-effekt */
+}
+
+.leaderboard-screen ul {
+  list-style: none;
+  padding: 0;
 }
 
 .overall-leaderboard-screen ul {
@@ -12,11 +26,44 @@
   padding: 0;
 }
 
-.overall-leaderboard-screen li {
+.leaderboard-screen li {
   font-size: 1.2rem;
   margin: 10px 0;
   padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #1f1f1f;
+  border: 1px solid #ff9800;
   border-radius: 5px;
+  color: #e0e0e0;
+}
+
+.overall-leaderboard-screen li {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  padding: 15px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 8px;
+  color: #e0e0e0; /* Lys tekst */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.overall-leaderboard-screen li:hover {
+  background-color: #2a2a2a; /* Lysere baggrund ved hover */
+  transform: scale(1.02); /* Lidt større ved hover */
+}
+
+.reset-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #ff9800;
+  color: #121212;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reset-button:hover {
+  background-color: #ffc107; /* Lysere orange ved hover */
 }

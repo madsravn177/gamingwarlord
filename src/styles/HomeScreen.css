@@ -18,3 +18,46 @@
   font-size: 1.2rem;
   color: #666;
 }
+
+.warlord-section {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #1f1f1f;
+  border: 2px solid #ff9800;
+  border-radius: 10px;
+  color: #e0e0e0;
+}
+
+.warlord-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.warlord-section p {
+  font-size: 1.2rem;
+}
+
+.recent-activities-section {
+  margin-top: 30px;
+}
+
+.recent-activities-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #ff9800;
+}
+
+.recent-activities-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-activities-section li {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #1f1f1f;
+  border: 1px solid #ff9800;
+  border-radius: 5px;
+  color: #e0e0e0;
+}

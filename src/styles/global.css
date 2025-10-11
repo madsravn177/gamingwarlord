@@ -1,5 +1,5 @@
 /* global.css */
-/* Reset styling */
+/* Global reset */
 * {
   margin: 0;
   padding: 0;
@@ -9,24 +9,27 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
+  font-family: 'Roboto', sans-serif;
+  background-color: #121212; /* Mørk baggrund */
+  color: #e0e0e0; /* Lys tekst */
   line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
+  font-family: 'Orbitron', sans-serif; /* Gaming-inspireret font */
+  color: #ff9800; /* Neon-orange accent */
 }
 
 a {
   text-decoration: none;
-  color: #007bff;
+  color: #ff9800;
+  transition: color 0.3s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: #ffc107; /* Lysere orange ved hover */
 }
 
 ul {
@@ -36,17 +39,19 @@ ul {
 }
 
 button {
+  font-family: 'Roboto', sans-serif;
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
+  background-color: #ff9800;
+  color: #121212;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-radius: 5px;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #ffc107;
 }
 
 .container {
