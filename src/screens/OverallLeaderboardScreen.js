@@ -22,10 +22,10 @@ function OverallLeaderboardScreen() {
         totalPoints: Number(doc.data().totalPoints || 0), // Sørg for, at totalPoints er et tal
       }));
 
-      // Debugging: Log data for at sikre, at `totalPoints` findes og er et tal
+      // Debugging: Log data for at sikre, at totalPoints findes og er et tal
       console.log("Fetched users:", usersData);
 
-      // Sorter brugerne efter `totalPoints` i faldende rækkefølge
+      // Sortér brugerne efter `totalPoints` i faldende rækkefølge
       const sortedUsers = usersData.sort((a, b) => b.totalPoints - a.totalPoints);
 
       // Debugging: Log sorteret data
@@ -43,13 +43,24 @@ function OverallLeaderboardScreen() {
       {users.length === 0 ? (
         <p>No users found.</p>
       ) : (
-        <ul>
-          {users.map((user, index) => (
-            <li key={user.id}>
-              {index + 1}. {user.username} - {user.totalPoints} points
-            </li>
-          ))}
-        </ul>
+        <table className="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Username</th>
+              <th>Total Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={user.id}>
+                <td>{index + 1}</td>
+                <td>{user.username}</td>
+                <td>{user.totalPoints}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
