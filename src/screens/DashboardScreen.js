@@ -9,6 +9,7 @@ function DashboardScreen() {
   const [selectedGame, setSelectedGame] = useState(null); // Valgt spil til redigering
   const [editedGame, setEditedGame] = useState({ name: "", difficulty: 0 }); // Redigeret spil
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal til redigering
+  const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
 
   useEffect(() => {
     fetchGames();
@@ -131,8 +132,12 @@ function DashboardScreen() {
             {games.map((game) => (
               <li key={game.id}>
                 <strong>{game.name}</strong> - Difficulty: {game.difficulty} - Points: {game.points}
-                <button onClick={() => openEditModal(game)}>Edit</button>
-                <button onClick={() => deleteGame(game.id)}>Delete</button>
+                {username === "Admin" && (
+                  <>
+                    <button onClick={() => openEditModal(game)}>Edit</button>
+                    <button onClick={() => deleteGame(game.id)}>Delete</button>
+                  </>
+                )}
               </li>
             ))}
           </ul>
