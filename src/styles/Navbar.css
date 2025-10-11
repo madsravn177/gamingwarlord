@@ -15,7 +15,8 @@
 }
 
 .navbar-links li {
-  margin: 0 10px;
+  display: inline-block;
+  margin-right: 15px;
 }
 
 .navbar-links a {

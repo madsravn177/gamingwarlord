@@ -8,6 +8,9 @@ import DashboardScreen from "./screens/DashboardScreen";
 import GamePoolScreen from "./screens/GamePoolScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
+import GameLeaderboardScreen from "./screens/GameLeaderboardScreen";
+import OverallLeaderboardScreen from "./screens/OverallLeaderboardScreen";
+import UserCompletedGamesScreen from "./screens/UserCompletedGamesScreen";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("username"));
@@ -53,6 +56,24 @@ function App() {
           path="/gamepool"
           element={
             isAuthenticated ? <GamePoolScreen /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/leaderboard/:gameId"
+          element={
+            isAuthenticated ? <GameLeaderboardScreen /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/overall-leaderboard"
+          element={
+            isAuthenticated ? <OverallLeaderboardScreen /> : <Navigate to="/login" />
+          }
+        />
+        <Route
+          path="/completed-games"
+          element={
+            isAuthenticated ? <UserCompletedGamesScreen /> : <Navigate to="/login" />
           }
         />
       </Routes>

@@ -1,19 +1,10 @@
 import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import "../styles/Navbar.css"; // Import CSS-filen
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
 
 function Navbar() {
-  const navigate = useNavigate(); // Brug useNavigate til navigation
-  const location = useLocation(); // Hent den aktuelle route
-
-  // Hent brugernavn fra localStorage
-  const username = localStorage.getItem("username");
-
-  // Skjul Navbar på login- og signup-siderne
-  const hideNavbar = ["/login", "/signup"].includes(location.pathname);
-  if (hideNavbar) {
-    return null; // Returnér ingenting, hvis Navbar skal skjules
-  }
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
 
   const handleLogout = () => {
     localStorage.removeItem("username"); // Fjern brugernavn fra localStorage
@@ -27,18 +18,21 @@ function Navbar() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/leaderboard">Leaderboard</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
-          <Link to="/dashboard">Add Games</Link>
+          <Link to="/gamepool">Game Pool</Link>
         </li>
         <li>
-          <Link to="/gamepool">Complete Games</Link>
+          <Link to="/completed-games">Completed Games</Link>
+        </li>
+        <li>
+          <Link to="/overall-leaderboard">Overall Leaderboard</Link>
         </li>
       </ul>
       <div className="navbar-user">
         <span>
-          <strong>{username}</strong>
+          Logged in as: <strong>{username}</strong>
         </span>
         <button className="logout-button" onClick={handleLogout}>
           Logout

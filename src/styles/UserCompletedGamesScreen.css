@@ -1,0 +1,22 @@
+.user-completed-games-screen {
+  padding: 20px;
+}
+
+.user-completed-games-screen h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.user-completed-games-screen ul {
+  list-style: none;
+  padding: 0;
+}
+
+.user-completed-games-screen li {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}

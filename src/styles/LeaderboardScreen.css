@@ -42,3 +42,18 @@
   color: gold;
   font-size: 20px;
 }
+
+.reset-button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.reset-button:hover {
+  background-color: #cc0000;
+}

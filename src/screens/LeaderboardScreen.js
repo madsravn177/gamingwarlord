@@ -5,41 +5,42 @@ import "../styles/LeaderboardScreen.css";
 
 function LeaderboardScreen() {
   const [users, setUsers] = useState([]);
-  const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        const usersData = querySnapshot.docs
-          .map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-          .filter((user) => user.username.toLowerCase() !== "admin"); // Fjern Admin-brugeren
-
-        const sortedUsers = usersData.sort((a, b) => b.score - a.score); // Sorter efter score
-        setUsers(sortedUsers);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    fetchUsers();
+    fetchOverallLeaderboard();
   }, []);
+
+  // Hent det samlede leaderboard fra Firestore
+  const fetchOverallLeaderboard = async () => {
+    try {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+
+      const usersData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const sortedUsers = usersData.sort((a, b) => b.totalPoints - a.totalPoints); // Sorter efter samlede point
+      setUsers(sortedUsers);
+    } catch (error) {
+      console.error("Error fetching overall leaderboard:", error);
+    }
+  };
 
   // Nulstil alle brugeres point
   const resetPoints = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const batchPromises = querySnapshot.docs.map((userDoc) => {
+      const usersRef = collection(db, "users");
+      const querySnapshot = await getDocs(usersRef);
+
+      const resetPromises = querySnapshot.docs.map((userDoc) => {
         const userRef = doc(db, "users", userDoc.id);
-        return updateDoc(userRef, { score: 0 });
+        return updateDoc(userRef, { totalPoints: 0 });
       });
 
-      await Promise.all(batchPromises);
+      await Promise.all(resetPromises);
       alert("All points have been reset!");
-      window.location.reload(); // Genindlæs siden for at opdatere leaderboardet
+      fetchOverallLeaderboard(); // Opdater leaderboardet
     } catch (error) {
       console.error("Error resetting points:", error);
     }
@@ -47,25 +48,23 @@ function LeaderboardScreen() {
 
   return (
     <div className="leaderboard-screen">
-      <h1>Leaderboard</h1>
+      <h1>Overall Leaderboard</h1>
       {users.length === 0 ? (
         <p>No users found.</p>
       ) : (
         <ul>
           {users.map((user, index) => (
             <li key={user.id}>
-              {index + 1}. {user.username} - {user.score} points
+              {index + 1}. {user.username} - {user.totalPoints} points
             </li>
           ))}
         </ul>
       )}
 
-      {/* Vis nulstillingsknappen kun for Admin */}
-      {username === "Admin" && (
-        <button onClick={resetPoints} className="reset-button">
-          Reset All Points
-        </button>
-      )}
+      {/* Nulstil point-knap */}
+      <button onClick={resetPoints} className="reset-button">
+        Reset All Points
+      </button>
     </div>
   );
 }
