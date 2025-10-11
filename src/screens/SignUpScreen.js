@@ -15,7 +15,7 @@ function SignUpScreen() {
       const userRef = doc(db, "users", username);
       await setDoc(userRef, {
         username,
-        password, // Gemmer brugerens hashed password
+        password, // Gemmer brugerens adgangskode
         score: 0,
         completedGames: [],
         type: "user",
@@ -25,6 +25,7 @@ function SignUpScreen() {
       navigate("/login"); // Naviger til login-siden
     } catch (error) {
       console.error("Error creating account:", error);
+      alert("An error occurred while creating the account. Please try again.");
     }
   };
 
