@@ -32,14 +32,26 @@ function HomeScreen() {
   useEffect(() => {
     const fetchRecentActivities = async () => {
       try {
-        const resultsRef = collection(db, "gameResults");
-        const q = query(resultsRef, orderBy("timestamp", "desc"), limit(5)); // Sorter efter timestamp og hent de seneste 5
-        const querySnapshot = await getDocs(q);
-
-        const activities = querySnapshot.docs.map((doc) => ({
+        // Hent alle spil fra `games`-collectionen
+        const gamesSnapshot = await getDocs(collection(db, "games"));
+        const gamesData = gamesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+
+        // Hent de sidste 5 resultater fra `gameResults`-collectionen
+        const resultsRef = collection(db, "gameResults");
+        const q = query(resultsRef, orderBy("timestamp", "desc"), limit(5));
+        const querySnapshot = await getDocs(q);
+
+        const activities = querySnapshot.docs.map((doc) => {
+          const result = doc.data();
+          const game = gamesData.find((g) => g.id === result.gameId); // Match gameId med games
+          return {
+            ...result,
+            gameName: game ? game.name : "Unknown Game", // Brug spilnavn eller fallback
+          };
+        });
 
         setRecentActivities(activities);
       } catch (error) {

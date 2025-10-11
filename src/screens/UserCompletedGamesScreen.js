@@ -30,10 +30,22 @@ function UserCompletedGamesScreen() {
       // Match resultater med spilnavne og beregn point
       const combinedData = resultsData.map((result) => {
         const game = gamesData.find((g) => g.id === result.gameId);
+        const difficulty = game ? game.difficulty : 1;
+
+        // Beregn point, hvis de ikke allerede er gemt i resultaterne
+        const basePoints = [25, 18, 12, 10, 8, 6];
+        const placement = resultsData
+          .filter((r) => r.gameId === result.gameId)
+          .sort((a, b) => a.time - b.time)
+          .findIndex((r) => r.username === result.username) + 1;
+        const calculatedPoints = basePoints[placement - 1]
+          ? basePoints[placement - 1] * difficulty
+          : 0;
+
         return {
           ...result,
           gameName: game ? game.name : "Unknown Game",
-          points: result.points || 0, // Brug `points` fra resultaterne
+          points: result.points || calculatedPoints, // Brug `points` fra resultaterne eller beregn dem
         };
       });
 
