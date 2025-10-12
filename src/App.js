@@ -4,7 +4,8 @@ import "./styles/global.css";
 import Navbar from "./components/Navbar";
 import HomeScreen from "./screens/HomeScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import GamePoolScreen from "./screens/GamePoolScreen";
+import ComepleteGameScreen from "./screens/CompleteGameScreen";
+import AddGameScreen from "./screens/AddGameScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 import OverallLeaderboardScreen from "./screens/OverallLeaderboardScreen";
@@ -29,7 +30,8 @@ function App() {
       <Routes>
         <Route path="/" element={isAuthenticated ? <HomeScreen /> : <Navigate to="/login" />} />
         <Route path="/dashboard" element={isAuthenticated ? <DashboardScreen /> : <Navigate to="/login" />} />
-        <Route path="/gamepool" element={isAuthenticated ? <GamePoolScreen /> : <Navigate to="/login" />} />
+        <Route path="/gamepool" element={isAuthenticated ? <ComepleteGameScreen /> : <Navigate to="/login" />} />
+        <Route path="/add-game" element={isAuthenticated ? <AddGameScreen /> : <Navigate to="/login" />} />
         <Route path="/completed-games" element={isAuthenticated ? <UserCompletedGamesScreen /> : <Navigate to="/login" />} />
         <Route path="/overall-leaderboard" element={isAuthenticated ? <OverallLeaderboardScreen /> : <Navigate to="/login" />} />
         <Route path="/leaderboard/:gameId" element={isAuthenticated ? <GameLeaderboardScreen /> : <Navigate to="/login" />} />

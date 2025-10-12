@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import "../styles/SignUpScreen.css";
 
 function SignUpScreen() {
   const [username, setUsername] = useState("");
@@ -13,19 +14,12 @@ function SignUpScreen() {
 
     try {
       const userRef = doc(db, "users", username);
-      await setDoc(userRef, {
-        username,
-        password, // Gemmer brugerens adgangskode
-        score: 0,
-        completedGames: [],
-        type: "user",
-        createdAt: serverTimestamp(),
-      });
+      await setDoc(userRef, { username, password });
       alert("Account created successfully!");
-      navigate("/login"); // Naviger til login-siden
+      navigate("/login");
     } catch (error) {
-      console.error("Error creating account:", error);
-      alert("An error occurred while creating the account. Please try again.");
+      console.error("Error signing up:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 

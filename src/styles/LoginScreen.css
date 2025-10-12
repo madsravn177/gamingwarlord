@@ -1,15 +1,14 @@
-/* Login-skærm styling */
-.login-screen {
+/* Generel styling til login og signup */
+.screen {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* Fyld hele højden af vinduet */
   background-color: #121212; /* Mørk baggrund */
   color: #e0e0e0; /* Lys tekst */
-  margin: 0; /* Fjern margin for at undgå konflikter */
 }
 
-.login-container {
+.container {
   width: 100%;
   max-width: 400px; /* Maksimal bredde for formularen */
   background-color: #1f1f1f; /* Mørk grå baggrund */
@@ -19,19 +18,19 @@
   text-align: center;
 }
 
-.login-container h1 {
+.container h1 {
   font-size: 2rem;
   margin-bottom: 20px;
   color: #ff9800; /* Neon-orange accent */
 }
 
-.login-container form {
+.container form {
   display: flex;
   flex-direction: column;
   gap: 15px; /* Mellemrum mellem felterne */
 }
 
-.login-container input {
+.container input {
   padding: 10px;
   border: 1px solid #ff9800; /* Neon-orange kant */
   border-radius: 5px;
@@ -40,12 +39,12 @@
   font-size: 1rem;
 }
 
-.login-container input:focus {
+.container input:focus {
   outline: none;
   border-color: #ffc107; /* Lysere orange ved fokus */
 }
 
-.login-container button {
+.container button {
   padding: 10px 20px;
   background-color: #ff9800; /* Neon-orange baggrund */
   color: #121212; /* Mørk tekst */
@@ -56,23 +55,23 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.login-container button:hover {
+.container button:hover {
   background-color: #ffc107; /* Lysere orange ved hover */
   transform: scale(1.05); /* Lidt større ved hover */
 }
 
-.login-container p {
+.container p {
   margin-top: 15px;
   font-size: 0.9rem;
   color: #e0e0e0;
 }
 
-.login-container a {
+.container a {
   color: #00bcd4; /* Neon-blå link */
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.login-container a:hover {
+.container a:hover {
   color: #26c6da; /* Lysere blå ved hover */
 }

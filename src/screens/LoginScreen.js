@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import "../styles/LoginScreen.css";
 
 function LoginScreen() {
   const [username, setUsername] = useState("");
@@ -12,30 +13,28 @@ function LoginScreen() {
     e.preventDefault();
 
     try {
-      // Hent brugerens dokument fra Firestore
       const userRef = doc(db, "users", username);
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
-
-        // Tjek, om adgangskoden matcher
         if (userData.password === password) {
-          localStorage.setItem("username", username); // Gem brugernavn i localStorage
+          // Gem brugernavn i localStorage
+          localStorage.setItem("username", username);
 
-          // Sørg for at navigere korrekt
-          console.log("Navigating to HomeScreen...");
-          navigate("/", { replace: true }); // Naviger til HomeScreen uden at tilføje til historikken
-          window.dispatchEvent(new Event("storage")); // Tving opdatering af tilstand
+          // Naviger til hovedsiden eller dashboard
+          navigate("/dashboard");
+
+          alert("Login successful!");
         } else {
-          alert("Invalid password. Please try again."); // Forkert adgangskode
+          alert("Incorrect password. Please try again.");
         }
       } else {
-        alert("User does not exist. Please sign up first."); // Brugeren findes ikke
+        alert("User not found. Please check your username.");
       }
     } catch (error) {
-      console.error("Error logging in:", error);
-      alert("An error occurred while logging in. Please try again.");
+      console.error("Error during login:", error);
+      alert("An error occurred during login. Please try again.");
     }
   };
 

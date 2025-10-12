@@ -1,0 +1,44 @@
+.add-game-screen {
+  padding: 20px;
+  text-align: center;
+}
+
+.add-game-screen h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800; /* Neon-orange accent */
+}
+
+.add-game-screen form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Mellemrum mellem felterne */
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.add-game-screen input,
+.add-game-screen select {
+  padding: 10px;
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 5px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  color: #e0e0e0; /* Lys tekst */
+  font-size: 1rem;
+}
+
+.add-game-screen button {
+  padding: 10px 20px;
+  background-color: #00bcd4; /* Neon-blå baggrund */
+  color: #121212; /* Mørk tekst */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-game-screen button:hover {
+  background-color: #26c6da; /* Lysere blå ved hover */
+  transform: scale(1.05); /* Lidt større ved hover */
+}

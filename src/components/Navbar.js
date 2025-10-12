@@ -26,6 +26,9 @@ function Navbar({ isAuthenticated, setIsAuthenticated }) {
           <Link to="/dashboard">Game Leaderboard</Link>
         </li>
         <li>
+          <Link to="/add-game">Add Game</Link>
+        </li>
+        <li>
           <Link to="/gamepool">Complete Game</Link>
         </li>
         <li>

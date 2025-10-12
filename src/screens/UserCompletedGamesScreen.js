@@ -1,97 +1,148 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import "../styles/UserCompletedGamesScreen.css";
 
 function UserCompletedGamesScreen() {
   const [completedGames, setCompletedGames] = useState([]);
+  const [showOnlyMyGames, setShowOnlyMyGames] = useState(false); // Afkrydsningsfeltets tilstand
+  const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
 
   useEffect(() => {
     fetchCompletedGames();
   }, []);
 
-  // Hent alle gennemførte spil og match med spilnavne
   const fetchCompletedGames = async () => {
     try {
-      // Hent alle spil fra `games`-collectionen
-      const gamesSnapshot = await getDocs(collection(db, "games"));
-      const gamesData = gamesSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // Hent alle resultater fra `gameResults`-collectionen
+      // Hent gennemførte spil fra `gameResults`
       const resultsSnapshot = await getDocs(collection(db, "gameResults"));
       const resultsData = resultsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
 
-      // Match resultater med spilnavne og beregn point
-      const combinedData = resultsData.map((result) => {
+      // Hent spilnavne fra `games`
+      const gamesSnapshot = await getDocs(collection(db, "games"));
+      const gamesData = gamesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Match spilnavne med `gameId` i `gameResults`
+      const completedGamesWithNames = resultsData.map((result) => {
         const game = gamesData.find((g) => g.id === result.gameId);
-        const difficulty = game ? game.difficulty : 1;
-
-        // Beregn point, hvis de ikke allerede er gemt i resultaterne
-        const basePoints = [25, 18, 12, 10, 8, 6];
-        const placement = resultsData
-          .filter((r) => r.gameId === result.gameId)
-          .sort((a, b) => a.time - b.time)
-          .findIndex((r) => r.username === result.username) + 1;
-        const calculatedPoints = basePoints[placement - 1]
-          ? basePoints[placement - 1] * difficulty
-          : 0;
-
         return {
           ...result,
-          gameName: game ? game.name : "Unknown Game",
-          points: result.points || calculatedPoints, // Brug `points` fra resultaterne eller beregn dem
+          gameName: game ? game.name : "Unknown Game", // Tilføj spilnavn eller "Unknown Game"
+          points: result.earnedPoints || 0, // Brug `earnedPoints` fra `gameResults`
         };
       });
 
-      // Sortér spillene efter timestamp i faldende rækkefølge (seneste først)
-      const sortedGames = combinedData.sort((a, b) => b.timestamp - a.timestamp);
-
-      setCompletedGames(sortedGames);
+      setCompletedGames(completedGamesWithNames);
     } catch (error) {
       console.error("Error fetching completed games:", error);
     }
   };
 
-  // Konverter tid fra sekunder til timer:minutter
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return `${hours}h ${minutes}m`;
+  const handleDeleteCompletedGame = async (gameId, completedBy) => {
+    if (username !== "Ravn") {
+      alert("You do not have permission to delete this game.");
+      return;
+    }
+
+    try {
+      // Hent det slettede spil fra `gameResults`
+      const resultRef = doc(db, "gameResults", gameId);
+      const resultDoc = await getDoc(resultRef);
+
+      if (!resultDoc.exists()) {
+        alert("Game result not found.");
+        return;
+      }
+
+      const { earnedPoints } = resultDoc.data(); // Hent pointene for det slettede spil
+
+      // Sikring mod NaN: Hvis earnedPoints ikke er et tal, sæt det til 0
+      const validGamePoints = typeof earnedPoints === "number" && !isNaN(earnedPoints) ? earnedPoints : 0;
+
+      // Slet resultatet fra `gameResults`
+      await deleteDoc(resultRef);
+
+      // Opdater brugerens samlede point
+      const userRef = doc(db, "users", completedBy);
+      const userDoc = await getDoc(userRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const totalPoints = typeof userData.totalPoints === "number" && !isNaN(userData.totalPoints)
+          ? userData.totalPoints
+          : 0;
+
+        // Træk kun pointene for det slettede spil fra
+        const updatedPoints = Math.max(totalPoints - validGamePoints, 0);
+
+        // Opdater `totalPoints` i Firestore
+        await updateDoc(userRef, {
+          totalPoints: updatedPoints,
+        });
+
+        console.log(`Updated total points for ${completedBy}: ${updatedPoints}`);
+      } else {
+        console.error("User document not found.");
+      }
+
+      alert("Completed game deleted successfully!");
+      fetchCompletedGames(); // Opdater listen over gennemførte spil
+    } catch (error) {
+      console.error("Error deleting completed game:", error);
+      alert("Failed to delete completed game. Please try again.");
+    }
   };
+
+  // Filtrerede spil baseret på afkrydsningsfeltets tilstand
+  const filteredGames = showOnlyMyGames
+    ? completedGames.filter((game) => game.username === username)
+    : completedGames;
 
   return (
     <div className="user-completed-games-screen">
-      <h1>All Completed Games</h1>
-      {completedGames.length === 0 ? (
-        <p>No games have been completed yet.</p>
-      ) : (
-        <table className="completed-games-table">
-          <thead>
-            <tr>
-              <th>Game</th>
-              <th>Time</th>
-              <th>Points</th>
-              <th>Completed By</th>
-            </tr>
-          </thead>
-          <tbody>
-            {completedGames.map((game, index) => (
-              <tr key={index}>
-                <td>{game.gameName}</td>
-                <td>{formatTime(game.time)}</td>
-                <td>{game.points}</td>
-                <td>{game.username}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <h1>Completed Games</h1>
+      <div className="filter-container">
+        <label className="filter-checkbox">
+          <input
+            type="checkbox"
+            checked={showOnlyMyGames}
+            onChange={(e) => setShowOnlyMyGames(e.target.checked)}
+          />
+          Show only my completed games
+        </label>
+      </div>
+      <div className="completed-games-list">
+        {filteredGames.length === 0 ? (
+          <p>No completed games found.</p>
+        ) : (
+          filteredGames.map((game) => (
+            <div key={game.id} className="completed-game-card">
+              <h3>{game.gameName || "Unknown Game"}</h3>
+              <p>
+                Time: {Math.floor(game.time / 3600)}h{" "}
+                {Math.floor((game.time % 3600) / 60)}m
+              </p>
+              <p>Points: {game.points || 0}</p>
+              <p>Completed By: {game.username}</p>
+              {username === "Ravn" && (
+                <button
+                  onClick={() =>
+                    handleDeleteCompletedGame(game.id, game.username)
+                  }
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

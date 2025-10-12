@@ -1,12 +1,12 @@
 .dashboard-screen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start; /* Sørg for, at indholdet starter fra toppen */
   align-items: center;
   height: 100vh;
   text-align: center;
   padding: 20px;
-  margin-top: 0; /* Fjern unødvendigt mellemrum */
+  padding-top: 100px; /* Tilføj ekstra plads til at undgå overlap med Navbar */
 }
 
 .dashboard-screen input {
@@ -24,8 +24,9 @@
 }
 
 .dashboard-screen h1 {
-  font-size: 2.5rem;
-  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #ff9800; /* Neon-orange accent */
 }
 
 .dashboard-screen p {
@@ -51,6 +52,12 @@
 /* Styling til eksisterende spil */
 .existing-games {
   margin-top: 20px;
+  max-height: 300px; /* Begræns højden på listen */
+  overflow-y: auto; /* Tilføj scrollbar, hvis der er for mange spil */
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  padding: 10px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  border-radius: 8px;
 }
 
 .existing-games h2 {
@@ -89,23 +96,21 @@
 .existing-games ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .existing-games li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
+  padding: 10px;
   margin-bottom: 10px;
-  background-color: #1f1f1f; /* Mørk baggrund */
+  background-color: #2a2a2a; /* Alternativ baggrundsfarve */
   border: 1px solid #ff9800; /* Neon-orange kant */
-  border-radius: 8px;
+  border-radius: 5px;
   color: #e0e0e0; /* Lys tekst */
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .existing-games li:hover {
-  background-color: #2a2a2a; /* Lysere baggrund ved hover */
+  background-color: #333333; /* Lysere baggrund ved hover */
   transform: scale(1.02); /* Lidt større ved hover */
 }
 
@@ -124,4 +129,65 @@
 .view-leaderboard-button:hover {
   background-color: #26c6da; /* Lysere blå ved hover */
   transform: scale(1.05); /* Lidt større ved hover */
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsivt grid */
+  gap: 20px; /* Mellemrum mellem kortene */
+  margin-top: 20px;
+  width: 100%;
+}
+
+.game-card {
+  background-color: #1f1f1f; /* Mørk baggrund */
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  color: #e0e0e0; /* Lys tekst */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.game-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.game-card p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.game-card button {
+  padding: 10px 20px;
+  background-color: #00bcd4; /* Neon-blå baggrund */
+  color: #121212; /* Mørk tekst */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.game-card button:hover {
+  background-color: #26c6da; /* Lysere blå ved hover */
+  transform: scale(1.05); /* Lidt større ved hover */
+}
+
+.game-card:hover {
+  background-color: #2a2a2a; /* Lysere baggrund ved hover */
+  transform: scale(1.02); /* Lidt større ved hover */
+}
+
+.search-input {
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ff9800; /* Neon-orange kant */
+  border-radius: 5px;
+  background-color: #1f1f1f; /* Mørk baggrund */
+  color: #e0e0e0; /* Lys tekst */
+  font-size: 1rem;
 }
