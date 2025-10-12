@@ -2,28 +2,30 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+import { useAuth } from "../contexts/AuthContext"; // Sørg for korrekt sti
 import "../styles/LoginScreen.css";
 
 function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth(); // `login` bruges i handleLogin, så det er korrekt defineret og brugt
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const userRef = doc(db, "users", username);
+      const userRef = doc(db, "users", username); // Hent brugerens dokument fra Firestore
       const userDoc = await getDoc(userRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
         if (userData.password === password) {
-          // Gem brugernavn i localStorage
-          localStorage.setItem("username", username);
+          // Opdater loginstatus
+          login(username);
 
-          // Naviger til hovedsiden eller dashboard
-          navigate("/dashboard");
+          // Naviger til HomeScreen
+          navigate("/");
 
           alert("Login successful!");
         } else {
@@ -40,29 +42,24 @@ function LoginScreen() {
 
   return (
     <div className="login-screen">
-      <div className="login-container">
-        <h1>Login</h1>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-        <p>
-          Don't have an account? <a href="/signup">Sign Up</a>
-        </p>
-      </div>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
     </div>
   );
 }

@@ -38,7 +38,7 @@ function OverallLeaderboardScreen() {
   };
 
   return (
-    <div className="overall-leaderboard-screen">
+    <div className="main-content overall-leaderboard-screen">
       <h1>Overall Leaderboard</h1>
       {users.length === 0 ? (
         <p>No users found.</p>

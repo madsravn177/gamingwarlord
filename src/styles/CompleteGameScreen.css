@@ -1,7 +1,7 @@
 .complete-game-screen {
   padding: 20px;
   text-align: center;
-  background-color: #121212; /* Mørk baggrund */
+  background-color: #1f1f1f; /* Mørk baggrund */
   color: #e0e0e0; /* Lys tekst */
   min-height: 100vh; /* Fyld hele skærmens højde */
 }

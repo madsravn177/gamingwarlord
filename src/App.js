@@ -4,13 +4,24 @@ import "./styles/global.css";
 import Navbar from "./components/Navbar";
 import HomeScreen from "./screens/HomeScreen";
 import DashboardScreen from "./screens/DashboardScreen";
-import ComepleteGameScreen from "./screens/CompleteGameScreen";
+import CompleteGameScreen from "./screens/CompleteGameScreen";
 import AddGameScreen from "./screens/AddGameScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import LoginScreen from "./screens/LoginScreen";
 import OverallLeaderboardScreen from "./screens/OverallLeaderboardScreen";
 import UserCompletedGamesScreen from "./screens/UserCompletedGamesScreen";
 import GameLeaderboardScreen from "./screens/GameLeaderboardScreen";
+import { AuthProvider } from "./contexts/AuthContext";
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = !!localStorage.getItem("username");
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
+  return children;
+};
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("username"));
@@ -21,24 +32,87 @@ function App() {
     };
 
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (
-    <Router>
-      {isAuthenticated && <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />}
-      <Routes>
-        <Route path="/" element={isAuthenticated ? <HomeScreen /> : <Navigate to="/login" />} />
-        <Route path="/dashboard" element={isAuthenticated ? <DashboardScreen /> : <Navigate to="/login" />} />
-        <Route path="/gamepool" element={isAuthenticated ? <ComepleteGameScreen /> : <Navigate to="/login" />} />
-        <Route path="/add-game" element={isAuthenticated ? <AddGameScreen /> : <Navigate to="/login" />} />
-        <Route path="/completed-games" element={isAuthenticated ? <UserCompletedGamesScreen /> : <Navigate to="/login" />} />
-        <Route path="/overall-leaderboard" element={isAuthenticated ? <OverallLeaderboardScreen /> : <Navigate to="/login" />} />
-        <Route path="/leaderboard/:gameId" element={isAuthenticated ? <GameLeaderboardScreen /> : <Navigate to="/login" />} />
-        <Route path="/signup" element={<SignUpScreen />} />
-        <Route path="/login" element={<LoginScreen />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          {/* Offentlige ruter */}
+          <Route path="/" element={<HomeScreen />} />
+          <Route path="/signup" element={<SignUpScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
+
+          {/* Beskyttede ruter */}
+          <Route
+            path="/dashboard"
+            element={
+              isAuthenticated ? <DashboardScreen /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/complete-game"
+            element={
+              <ProtectedRoute>
+                <CompleteGameScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-game"
+            element={
+              <ProtectedRoute>
+                <AddGameScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/overall-leaderboard"
+            element={
+              <ProtectedRoute>
+                <OverallLeaderboardScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user-completed-games"
+            element={
+              <ProtectedRoute>
+                <UserCompletedGamesScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/game-leaderboard"
+            element={
+              <ProtectedRoute>
+                <GameLeaderboardScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/completed-games"
+            element={
+              <ProtectedRoute>
+                <UserCompletedGamesScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leaderboard/:gameId"
+            element={
+              <ProtectedRoute>
+                <GameLeaderboardScreen />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

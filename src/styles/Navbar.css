@@ -1,16 +1,16 @@
 .navbar {
-  position: fixed;
+  position: fixed; /* Gør Navbar'en fast øverst */
   top: 0;
   left: 0;
-  width: 100%;
-  height: 80px; /* Fast højde */
-  background-color: #1f1f1f; /* Mørk baggrund */
-  color: #e0e0e0; /* Lys tekst */
+  width: 100%; /* Fylder hele bredden */
+  height: 60px; /* Fast højde */
+  background-color: #333; /* Baggrundsfarve */
+  color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 0 20px;
-  z-index: 1000; /* Sørg for, at Navbar er øverst */
+  z-index: 1000; /* Sørg for, at den er øverst */
 }
 
 .navbar-links {

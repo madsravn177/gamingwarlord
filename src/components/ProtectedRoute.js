@@ -1,16 +1,15 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-function ProtectedRoute({ children }) {
-  const isAuthenticated = localStorage.getItem("username"); // Tjek, om brugeren er logget ind
+const ProtectedRoute = ({ children }) => {
+  const { isLoggedIn } = useAuth();
 
-  if (!isAuthenticated) {
-    // Hvis brugeren ikke er logget ind, omdiriger til login-siden
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
 
-  // Hvis brugeren er logget ind, vis den beskyttede side
   return children;
-}
+};
 
 export default ProtectedRoute;

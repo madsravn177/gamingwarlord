@@ -38,7 +38,7 @@ function CompleteGameScreen() {
       return;
     }
 
-    const totalSeconds = parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60; // Konverter til sekunder
+    const totalSeconds = parseInt(hours) * 3600 + parseInt(minutes) * 60; // Konverter til sekunder
 
     try {
       const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
@@ -53,57 +53,95 @@ function CompleteGameScreen() {
         .filter((result) => result.gameId === selectedGame.id);
 
       // Tjek, om spilleren allerede har gennemført spillet
-      const existingResult = gameResults.find((result) => result.username === username);
+      const existingResult = gameResults.find(
+        (result) => result.username === username && result.difficulty <= selectedDifficulty
+      );
 
-      let newResultId = null;
-
+      let oldEarnedPoints = 0;
       if (existingResult) {
-        // Hvis spilleren allerede har gennemført spillet, opdater kun hvis de forbedrer sig
-        const resultRef = doc(db, "gameResults", existingResult.id);
-        const resultDoc = await getDoc(resultRef);
+        // Hvis spilleren allerede har gennemført spillet, gem de gamle point
+        oldEarnedPoints = existingResult.earnedPoints || 0;
 
-        if (resultDoc.exists()) {
-          const resultData = resultDoc.data();
+        // Hvis spilleren vælger en højere sværhedsgrad eller forbedrer sin tid, opdater resultatet
+        if (selectedDifficulty > existingResult.difficulty || totalSeconds < existingResult.time) {
+          const resultRef = doc(db, "gameResults", existingResult.id);
+          const updatedPoints = basePoints[0] * selectedDifficulty; // Beregn de nye point baseret på sværhedsgrad
 
-          if (selectedDifficulty > resultData.difficulty || totalSeconds < resultData.time) {
-            // Opdater resultatet i Firestore
-            await updateDoc(resultRef, {
-              difficulty: selectedDifficulty,
-              time: totalSeconds,
-              timestamp: serverTimestamp(), // Opdater tidsstemplet
+          // Opdater resultatet i `gameResults`
+          await updateDoc(resultRef, {
+            difficulty: selectedDifficulty,
+            time: totalSeconds,
+            earnedPoints: updatedPoints, // Opdater med de nye point
+          });
+
+          // Beregn forskellen mellem de gamle og nye point
+          const pointDifference = updatedPoints - oldEarnedPoints;
+
+          // Opdater `totalPoints` i `users`
+          const userRef = doc(db, "users", username);
+          const userDoc = await getDoc(userRef);
+
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const totalPoints = typeof userData.totalPoints === "number" && !isNaN(userData.totalPoints)
+              ? userData.totalPoints
+              : 0;
+
+            const updatedTotalPoints = totalPoints + pointDifference;
+
+            await updateDoc(userRef, {
+              totalPoints: updatedTotalPoints,
             });
-          } else {
-            alert("You have not improved your score or difficulty. No changes made.");
-            return;
+
+            console.log(`Updated total points for ${username}: ${updatedTotalPoints}`);
           }
+        } else {
+          alert("You have not improved your score or difficulty. No changes made.");
+          return;
         }
       } else {
         // Hvis spilleren ikke har gennemført spillet før, tilføj et nyt resultat
         const resultRef = doc(db, "gameResults", `${selectedGame.id}_${username}_${selectedDifficulty}`);
+        const newPoints = basePoints[0] * selectedDifficulty; // Beregn point for den nye gennemførelse
+
         await setDoc(resultRef, {
           gameId: selectedGame.id,
           username,
           difficulty: selectedDifficulty,
           time: totalSeconds,
-          earnedPoints: 0, // Midlertidig værdi, opdateres senere
+          earnedPoints: newPoints, // Gem de beregnede point
           timestamp: serverTimestamp(),
         });
-        newResultId = resultRef.id; // Gem ID'et for det nye resultat
+
+        // Opdater `totalPoints` i `users`
+        const userRef = doc(db, "users", username);
+        const userDoc = await getDoc(userRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const totalPoints = typeof userData.totalPoints === "number" && !isNaN(userData.totalPoints)
+            ? userData.totalPoints
+            : 0;
+
+          const updatedTotalPoints = totalPoints + newPoints;
+
+          await updateDoc(userRef, {
+            totalPoints: updatedTotalPoints,
+          });
+
+          console.log(`Updated total points for ${username}: ${updatedTotalPoints}`);
+        } else {
+          // Opret brugerens dokument, hvis det ikke findes
+          await setDoc(userRef, {
+            username,
+            totalPoints: newPoints,
+          });
+
+          console.log(`Created user document for ${username} with points: ${newPoints}`);
+        }
       }
 
-      // Tilføj det nye resultat til gameResults-arrayet, hvis det er et nyt resultat
-      if (newResultId) {
-        gameResults.push({
-          id: newResultId,
-          gameId: selectedGame.id,
-          username,
-          difficulty: selectedDifficulty,
-          time: totalSeconds,
-          earnedPoints: 0, // Midlertidig værdi
-        });
-      }
-
-      // Sorter resultaterne efter sværhedsgrad og tid
+      // Sorter resultaterne efter sværhedsgrad (højeste først) og derefter tid (laveste først)
       gameResults.sort((a, b) => {
         if (b.difficulty !== a.difficulty) {
           return b.difficulty - a.difficulty; // Prioriter højere sværhedsgrad
@@ -111,15 +149,14 @@ function CompleteGameScreen() {
         return a.time - b.time; // Hvis sværhedsgraden er ens, prioriter lavere tid
       });
 
-      // Opdater pointene baseret på rangering
+      // Opdater `earnedPoints` og placeringer for alle spillere baseret på deres nye placering
       for (let i = 0; i < gameResults.length; i++) {
         const playerResult = gameResults[i];
-        const rankPoints = basePoints[i] || 0; // Hvis placeringen er uden for top 6, får man 0 point
-        const updatedPoints = rankPoints * playerResult.difficulty;
+        const placementPoints = basePoints[i] || 0; // Hvis placeringen er uden for top 6, får man 0 point
+        const updatedPoints = placementPoints * playerResult.difficulty;
 
         // Beregn forskellen mellem de gamle og nye point
-        const oldPoints = playerResult.earnedPoints || 0;
-        const pointDifference = updatedPoints - oldPoints;
+        const pointDifference = updatedPoints - (playerResult.earnedPoints || 0);
 
         // Opdater `earnedPoints` i Firestore
         const playerResultRef = doc(db, "gameResults", playerResult.id);
@@ -148,7 +185,7 @@ function CompleteGameScreen() {
         }
       }
 
-      alert("Game completed successfully! Your points have been updated.");
+      alert(`Game completed successfully! Your points have been updated.`);
       setSelectedGame(null);
       setSelectedDifficulty(1);
       setHours("");

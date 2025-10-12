@@ -1,74 +1,82 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import "../styles/GameLeaderboardScreen.css";
 
 function GameLeaderboardScreen() {
-  const { gameId } = useParams(); // Hent spillets ID fra URL'en
+  const { gameId } = useParams(); // Hent gameId fra URL'en
   const [results, setResults] = useState([]);
-  const [gameName, setGameName] = useState("");
-
-  const fetchLeaderboard = useCallback(async () => {
-    try {
-      const resultsRef = collection(db, "gameResults");
-      const q = query(resultsRef, where("gameId", "==", gameId));
-      const querySnapshot = await getDocs(q);
-
-      const resultsData = querySnapshot.docs.map((doc) => doc.data());
-
-      // Filtrer for kun at vise den bedste tid for hver bruger
-      const bestResults = resultsData.reduce((acc, result) => {
-        const existing = acc.find((r) => r.username === result.username);
-        if (!existing || result.time < existing.time) {
-          // Hvis der ikke er en eksisterende tid, eller den nye tid er bedre, opdater
-          return acc.filter((r) => r.username !== result.username).concat(result);
-        }
-        return acc;
-      }, []);
-
-      const sortedResults = bestResults.sort((a, b) => a.time - b.time); // Sorter efter tid
-      setResults(sortedResults);
-
-      // Hent spillets navn
-      const gameRef = collection(db, "games");
-      const gameSnapshot = await getDocs(query(gameRef, where("id", "==", gameId)));
-      if (!gameSnapshot.empty) {
-        const gameData = gameSnapshot.docs[0].data();
-        setGameName(gameData.name);
-      }
-    } catch (error) {
-      console.error("Error fetching leaderboard:", error);
-    }
-  }, [gameId]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchLeaderboard();
-  }, [fetchLeaderboard]);
+    const fetchLeaderboard = async () => {
+      try {
+        console.log(`Fetching leaderboard for gameId: ${gameId}`);
+        const resultsRef = collection(db, "gameResults"); // Brug den korrekte samling
+        const q = query(resultsRef, where("gameId", "==", gameId)); // Filtrer på gameId
+        const querySnapshot = await getDocs(q);
+        const leaderboardData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("Fetched leaderboard data:", leaderboardData);
+        setResults(leaderboardData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching leaderboard data:", error);
+        setLoading(false);
+      }
+    };
 
-  // Konverter tid fra sekunder til timer:minutter
-  const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return `${hours}h ${minutes}m`;
-  };
+    fetchLeaderboard();
+  }, [gameId]);
+
+  if (loading) {
+    return <p>Loading leaderboard...</p>;
+  }
+
+  if (results.length === 0) {
+    return (
+      <div className="no-data">
+        <h2>No Results Found</h2>
+        <p>There are currently no results for this game. Please check back later!</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="game-leaderboard-screen">
-      <h1>Leaderboard for {gameName}</h1>
-      {results.length === 0 ? (
-        <p>No results available for this game.</p>
-      ) : (
-        <ul>
+    <div className="main-content game-leaderboard-screen">
+      <h1>Game Leaderboard</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Points</th>
+            <th>Difficulty</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
           {results.map((result, index) => (
-            <li key={index}>
-              {index + 1}. {result.username} - {formatTime(result.time)}
-            </li>
+            <tr key={index}>
+              <td>{result.username}</td>
+              <td>{(result.earnedPoints || 0)}</td>
+              <td>{result.difficulty}</td>
+              <td>{formatTime(result.time)}</td>
+            </tr>
           ))}
-        </ul>
-      )}
+        </tbody>
+      </table>
     </div>
   );
+}
+
+function formatTime(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+  return `${hours}h ${minutes}m ${remainingSeconds}s`;
 }
 
 export default GameLeaderboardScreen;

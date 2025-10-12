@@ -33,8 +33,8 @@ function DashboardScreen() {
   );
 
   return (
-    <div className="dashboard-screen">
-      <h1>Dashboard</h1>
+    <div className="main-content">
+      <h1>Game List</h1>
       <input
         type="text"
         placeholder="Search for a game..."
