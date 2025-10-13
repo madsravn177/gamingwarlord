@@ -106,24 +106,9 @@ function HomeScreen() {
 
 <div className="difficulty-rules-box card">
   <h3>Regler for valg af sværhedsgrad</h3>
-  <p>Når du vælger sværhedsgrad for et spil, skal du være opmærksom på følgende:</p>
-  <ul>
-    <li>Sværhedsgrad vælges objektivt fra <strong>1 </strong> til <strong>10</strong>.</li>
-    <li>Værdien fastsættes gennem en standardiseret proces med ChatGPT, hvor samme prompt bruges til alle spil. Dette sikrer, at sværhedsgraden er konsistent og ikke ændres, når forskellige brugere spørger om spillet.</li>
-    <li>Højere sværhedsgrad giver flere point, men spillet bliver sværere.</li>
-    <li>Du kan kun opdatere dit resultat, hvis du forbedrer tiden eller sværhedsgraden.</li>
-    <li>Vælg en sværhedsgrad, der matcher dit niveau og mål.</li>
-    <li>Husk at planlægge din tid – sværere spil kan tage længere tid at gennemføre.</li>
-  </ul>
-</div>
-
-
-    {/* Points & Difficulty Info Box */}
-    <div className="difficulty-rules-box card">
-  <h3>Regler for valg af sværhedsgrad</h3>
   <p>Når du vælger sværhedsgrad for et spil, kan du følge disse retningslinjer:</p>
   <ul>
-    <li>Sværhedsgrad går fra <strong>1 </strong> til <strong>10 </strong>.</li>
+    <li>Sværhedsgrad går fra <strong>1 (lettest)</strong> til <strong>10 (sværest)</strong>.</li>
     <li>Sværhedsgraden er fastlagt objektivt via ChatGPT med en standardprompt, så den er <strong>ens for alle spillere</strong>.</li>
     <li>Højere sværhedsgrad giver flere point, men spillet bliver også mere udfordrende.</li>
     <li>Du kan kun <strong>opdatere dit resultat</strong>, hvis du forbedrer tiden eller sværhedsgraden.</li>
@@ -132,6 +117,21 @@ function HomeScreen() {
   </ul>
 </div>
 
+
+    {/* Points & Difficulty Info Box */}
+    <div className="multiplier-info-box card">
+  <h3>Point & Sværhedsgrad</h3>
+  <p><strong>Pointene beregnes ud fra din rank på spillets leaderboard:</strong></p>
+  <p>Rank 1 → 25 point</p>
+  <p>Rank 2 → 18 point</p>
+  <p>Rank 3 → 12 point</p>
+  <p>Rank 4 → 10 point</p>
+  <p>Rank 5 → 8 point</p>
+  <p>Rank 6 → 6 point</p>
+  <p>Rank 7 eller lavere → 0 point</p>
+  <p>Disse base points ganges med den valgte sværhedsgrad for at give de endelige earned points.</p>
+  <p><em>Eksempel:</em> Rank 2 (18 point) × sværhedsgrad 3 → 54 point</p>
+</div>
 
 
 
