@@ -37,127 +37,135 @@ function CompleteGameScreen() {
       alert("Please select a game, difficulty, and provide a valid time (hours and minutes).");
       return;
     }
-
-    const totalSeconds = parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60; // Konverter til sekunder
-
+  
+    const totalSeconds = parseInt(hours, 10) * 3600 + parseInt(minutes, 10) * 60;
+    const username = localStorage.getItem("username");
+  
+    const basePoints = [25, 18, 12, 10, 8, 6]; // Top 6 får points
+  
     try {
-      const username = localStorage.getItem("username"); // Hent brugernavn fra localStorage
-
-      // Basispoint for placeringer (1. plads = 25, 2. plads = 18, osv.)
-      const basePoints = [25, 18, 12, 10, 8, 6];
-
+      console.log("🎮 Starting game completion flow...");
+  
       // Hent alle resultater for det specifikke spil
       const resultsSnapshot = await getDocs(collection(db, "gameResults"));
-      const gameResults = resultsSnapshot.docs
+      let gameResults = resultsSnapshot.docs
         .map((doc) => ({ id: doc.id, ...doc.data() }))
         .filter((result) => result.gameId === selectedGame.id);
-
-      // Tjek, om spilleren allerede har gennemført spillet
-      const existingResult = gameResults.find((result) => result.username === username);
-
-      let newResultId = null;
-
+  
+      // Find eksisterende resultat for brugeren (hvis det findes)
+      const existingResult = gameResults.find((r) => r.username === username);
+      const newResultId = `${selectedGame.id}_${username}_${selectedDifficulty}`;
+  
       if (existingResult) {
-        // Hvis spilleren allerede har gennemført spillet, opdater kun hvis de forbedrer sig
         const resultRef = doc(db, "gameResults", existingResult.id);
         const resultDoc = await getDoc(resultRef);
-
+  
         if (resultDoc.exists()) {
           const resultData = resultDoc.data();
-
+  
           if (selectedDifficulty > resultData.difficulty || totalSeconds < resultData.time) {
-            // Opdater resultatet i Firestore
             await updateDoc(resultRef, {
               difficulty: selectedDifficulty,
               time: totalSeconds,
-              timestamp: serverTimestamp(), // Opdater tidsstemplet
+              timestamp: serverTimestamp(),
             });
+            console.log(`✅ Updated existing result for ${username}`);
           } else {
             alert("You have not improved your score or difficulty. No changes made.");
             return;
           }
         }
       } else {
-        // Hvis spilleren ikke har gennemført spillet før, tilføj et nyt resultat
-        const resultRef = doc(db, "gameResults", `${selectedGame.id}_${username}_${selectedDifficulty}`);
+        // Nyt resultat → ingen point endnu
+        const resultRef = doc(db, "gameResults", newResultId);
         await setDoc(resultRef, {
           gameId: selectedGame.id,
           username,
           difficulty: selectedDifficulty,
           time: totalSeconds,
-          earnedPoints: 0, // Midlertidig værdi, opdateres senere
+          earnedPoints: 0,
           timestamp: serverTimestamp(),
         });
-        newResultId = resultRef.id; // Gem ID'et for det nye resultat
+        console.log(`🆕 Created new result for ${username}`);
       }
-
-      // Tilføj det nye resultat til gameResults-arrayet, hvis det er et nyt resultat
-      if (newResultId) {
-        gameResults.push({
-          id: newResultId,
-          gameId: selectedGame.id,
-          username,
-          difficulty: selectedDifficulty,
-          time: totalSeconds,
-          earnedPoints: 0, // Midlertidig værdi
-        });
-      }
-
-      // Sorter resultaterne efter sværhedsgrad og tid
+  
+      // Hent friske data igen efter opdatering
+      const updatedResultsSnapshot = await getDocs(collection(db, "gameResults"));
+      gameResults = updatedResultsSnapshot.docs
+        .map((doc) => ({ id: doc.id, ...doc.data() }))
+        .filter((result) => result.gameId === selectedGame.id);
+  
+      // Sortér korrekt efter difficulty (desc) og tid (asc)
       gameResults.sort((a, b) => {
-        if (b.difficulty !== a.difficulty) {
-          return b.difficulty - a.difficulty; // Prioriter højere sværhedsgrad
-        }
-        return a.time - b.time; // Hvis sværhedsgraden er ens, prioriter lavere tid
+        if (b.difficulty !== a.difficulty) return b.difficulty - a.difficulty;
+        return a.time - b.time;
       });
-
-      // Opdater pointene baseret på rangering
+  
+      console.table(
+        gameResults.map((r, i) => ({
+          rank: i + 1,
+          username: r.username,
+          difficulty: r.difficulty,
+          time: r.time,
+        }))
+      );
+  
+      // Opdater earnedPoints baseret på sortering
       for (let i = 0; i < gameResults.length; i++) {
-        const playerResult = gameResults[i];
-        const rankPoints = basePoints[i] || 0; // Hvis placeringen er uden for top 6, får man 0 point
-        const updatedPoints = rankPoints * playerResult.difficulty;
-
-        // Beregn forskellen mellem de gamle og nye point
-        const oldPoints = playerResult.earnedPoints || 0;
-        const pointDifference = updatedPoints - oldPoints;
-
-        // Opdater `earnedPoints` i Firestore
-        const playerResultRef = doc(db, "gameResults", playerResult.id);
-        await updateDoc(playerResultRef, {
-          earnedPoints: updatedPoints,
-        });
-
-        // Opdater `totalPoints` i `users`
-        const userRef = doc(db, "users", playerResult.username);
-        const userDoc = await getDoc(userRef);
-
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const totalPoints = typeof userData.totalPoints === "number" && !isNaN(userData.totalPoints)
-            ? userData.totalPoints
-            : 0;
-
-          // Tilføj forskellen til brugerens samlede point
-          const updatedTotalPoints = totalPoints + pointDifference;
-
-          await updateDoc(userRef, {
-            totalPoints: updatedTotalPoints,
-          });
-
-          console.log(`Updated total points for ${playerResult.username}: ${updatedTotalPoints}`);
-        }
+        const player = gameResults[i];
+        const rankPoints = basePoints[i] || 0;
+        const earnedPoints = rankPoints * player.difficulty;
+  
+        console.log(
+          `🏅 Rank ${i + 1}: ${player.username} | Diff: ${player.difficulty} | Points: ${earnedPoints}`
+        );
+  
+        const playerRef = doc(db, "gameResults", player.id);
+        await updateDoc(playerRef, { earnedPoints });
       }
-
-      alert("Game completed successfully! Your points have been updated.");
+  
+      // 🧮 Nu skal vi opdatere totalPoints i users
+      console.log("🔄 Recalculating total points for all users...");
+  
+      const allResultsSnapshot = await getDocs(collection(db, "gameResults"));
+      const allResults = allResultsSnapshot.docs.map((doc) => doc.data());
+  
+      // Beregn totalPoints pr. bruger
+      const userTotals = {};
+      for (const result of allResults) {
+        if (!userTotals[result.username]) userTotals[result.username] = 0;
+        userTotals[result.username] += result.earnedPoints || 0;
+      }
+  
+      console.table(
+        Object.entries(userTotals).map(([username, totalPoints]) => ({
+          username,
+          totalPoints,
+        }))
+      );
+  
+      // Opdater eller opret users i Firestore
+      for (const [username, totalPoints] of Object.entries(userTotals)) {
+        const userDocRef = doc(db, "users", username); // <--- forudsætter username = doc ID
+        await updateDoc(userDocRef, { totalPoints }).catch(async () => {
+          await setDoc(userDocRef, { username, totalPoints });
+        });
+      }
+  
+      console.log("✅ Updated totalPoints in users collection!");
+  
+      alert("✅ Game completed and points updated!");
       setSelectedGame(null);
       setSelectedDifficulty(1);
       setHours("");
       setMinutes("");
     } catch (error) {
-      console.error("Error completing game:", error);
+      console.error("❌ Error completing game:", error);
       alert("Failed to complete game. Please try again.");
     }
   };
+  
+  
 
   return (
     <div className="main-content complete-game-screen">
