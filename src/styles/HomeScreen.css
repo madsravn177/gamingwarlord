@@ -3,77 +3,31 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Fyld hele højden af vinduet */
   text-align: center;
-  background-color: #121212; /* Mørk baggrund */
-  padding: 20px;
-  color: #e0e0e0; /* Lys tekst */
+  min-height: 100vh;
+  padding-top: 60px;
 }
 
-.home-screen h1 {
-  font-size: 2.5rem;
-  color: #ff9800; /* Neon-orange accent */
-  text-shadow: 2px 2px 5px rgba(255, 152, 0, 0.5); /* Glød-effekt */
-  margin-bottom: 20px;
-}
-
-.home-screen p {
-  font-size: 1.2rem;
-  color: #e0e0e0; /* Lys tekst */
-  margin-bottom: 20px;
-}
-
-.warlord-section {
+.warlord-section, .recent-activities-section {
+  width: 100%;
+  max-width: 600px;
   margin-top: 20px;
   padding: 15px;
-  background-color: #1f1f1f; /* Mørk grå baggrund */
-  border: 2px solid #ff9800; /* Neon-orange kant */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Blød skygge */
-  text-align: center;
-}
-
-.warlord-section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-  color: #ff9800; /* Neon-orange accent */
-}
-
-.warlord-section p {
-  font-size: 1.2rem;
-  color: #e0e0e0; /* Lys tekst */
-}
-
-.recent-activities-section {
-  margin-top: 30px;
-  width: 100%;
-  max-width: 600px; /* Begræns bredden */
-}
-
-.recent-activities-section h2 {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #ff9800; /* Neon-orange accent */
-  text-align: center;
-}
-
-.recent-activities-section ul {
-  list-style: none;
-  padding: 0;
+  background-color: #1f1f1f;
+  border: 2px solid #ff9800;
+  border-radius: 12px;
 }
 
 .recent-activities-section li {
-  font-size: 1.2rem;
   margin: 10px 0;
   padding: 10px;
-  background-color: #1f1f1f; /* Mørk grå baggrund */
-  border: 1px solid #ff9800; /* Neon-orange kant */
-  border-radius: 5px;
-  color: #e0e0e0; /* Lys tekst */
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  background-color: #2a2a2a;
+  border: 1px solid #ff9800;
+  border-radius: 6px;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .recent-activities-section li:hover {
-  background-color: #2a2a2a; /* Lysere baggrund ved hover */
-  transform: scale(1.02); /* Lidt større ved hover */
+  background-color: #333;
+  transform: scale(1.02);
 }

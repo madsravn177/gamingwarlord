@@ -1,77 +1,38 @@
-.game-leaderboard-screen {
-  padding: 20px;
-  text-align: center;
-  background-color: #000000; /* Mørk baggrund */
-  color: #f5f5f5; /* Lys tekst */
-}
-
-.game-leaderboard-screen h1 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  color: #00bcd4; /* Neon-blå accent */
-  text-shadow: 2px 2px 5px rgba(0, 188, 212, 0.5); /* Glød-effekt */
-}
-
-.game-leaderboard-screen ul {
-  list-style: none;
-  padding: 0;
-}
-
-.game-leaderboard-screen li {
-  font-size: 1.2rem;
-  margin: 10px 0;
-  padding: 15px;
-  background-color: #1f1f1f; /* Mørk baggrund */
-  border: 1px solid #00bcd4; /* Neon-blå kant */
-  border-radius: 8px;
-  color: #e0e0e0; /* Lys tekst */
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.game-leaderboard-screen li:hover {
-  background-color: #2a2a2a; /* Lysere baggrund ved hover */
-  transform: scale(1.02); /* Lidt større ved hover */
-}
-
-.game-leaderboard-screen .time {
-  font-size: 1rem;
-  color: #ff9800; /* Neon-orange for tid */
-}
-
-.game-leaderboard-screen .points {
-  font-size: 1rem;
-  color: #4caf50; /* Grøn for point */
-}
-
-/* Styling til tabellen */
-.game-leaderboard-screen table {
+table {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 20px auto;
   border-collapse: collapse;
-  background-color: #1f1f1f; /* Mørk baggrund */
-  color: #e0e0e0; /* Lys tekst */
-  border: 1px solid #ff9800; /* Neon-orange kant */
 }
 
-.game-leaderboard-screen th,
-.game-leaderboard-screen td {
+th, td {
   padding: 10px;
-  border: 1px solid #ff9800; /* Neon-orange kant */
+  border: 1px solid #ff9800;
   text-align: center;
 }
 
-.game-leaderboard-screen th {
-  background-color: #2a2a2a; /* Mørkere baggrund for overskrifter */
+th {
+  background-color: #2a2a2a;
   font-weight: bold;
 }
 
-.game-leaderboard-screen tr:nth-child(even) {
-  background-color: #2a2a2a; /* Alternativ baggrundsfarve */
+tr:nth-child(even) {
+  background-color: #2a2a2a;
 }
 
-.game-leaderboard-screen tr:hover {
-  background-color: #333333; /* Lysere baggrund ved hover */
-  transform: scale(1.01); /* Lidt større ved hover */
+tr:hover {
+  background-color: #333;
+  transform: scale(1.01);
   transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.reset-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff9800;
+  color: #121212;
+}
+
+.reset-button:hover {
+  background-color: #ffc107;
 }

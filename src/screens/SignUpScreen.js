@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
-import "../styles/SignUpScreen.css";
+import { useAuth } from "../contexts/AuthContext";
+import "../styles/AuthScreens.css";
 
 function SignUpScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+
+  // Redirect hvis allerede logget ind
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/", { replace: true });
+    }
+  }, [isLoggedIn, navigate]);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -16,7 +25,7 @@ function SignUpScreen() {
       const userRef = doc(db, "users", username);
       await setDoc(userRef, { username, password });
       alert("Account created successfully!");
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (error) {
       console.error("Error signing up:", error);
       alert("An error occurred. Please try again.");
@@ -24,8 +33,8 @@ function SignUpScreen() {
   };
 
   return (
-    <div className="signup-screen">
-      <div className="signup-container">
+    <div className="screen">
+      <div className="container">
         <h1>Sign Up</h1>
         <form onSubmit={handleSignUp}>
           <input

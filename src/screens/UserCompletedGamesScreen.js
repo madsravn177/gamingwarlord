@@ -105,7 +105,7 @@ function UserCompletedGamesScreen() {
     : completedGames;
 
   return (
-    <div className="user-completed-games-screen">
+    <div className="main-content user-completed-games-screen">
       <h1>Completed Games</h1>
       <div className="filter-container">
         <label className="filter-checkbox">

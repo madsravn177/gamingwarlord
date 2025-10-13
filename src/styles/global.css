@@ -1,5 +1,6 @@
-/* global.css */
-/* Global reset */
+/* ======================= */
+/* GLOBAL STYLES */
+/* ======================= */
 * {
   margin: 0;
   padding: 0;
@@ -7,70 +8,74 @@
 }
 
 body {
-  margin: 0; /* Fjern standard margin */
-  padding: 0; /* Fjern standard padding */
   font-family: 'Roboto', sans-serif;
-  background-color: #1f1f1f; /* Mørk baggrund */
-  color: #e0e0e0; /* Lys tekst */
+  background-color: #121212;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-  font-family: 'Orbitron', sans-serif; /* Gaming-inspireret font */
-  color: #ff9800; /* Neon-orange accent */
+  font-family: 'Orbitron', sans-serif;
+  color: #ff9800;
+  margin-bottom: 15px;
 }
 
 a {
+  color: #00bcd4;
   text-decoration: none;
-  color: #ff9800;
+  font-weight: bold;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #ffc107; /* Lysere orange ved hover */
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  color: #26c6da;
 }
 
 button {
   font-family: 'Roboto', sans-serif;
   cursor: pointer;
-  background-color: #ff9800;
-  color: #121212;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #ffc107;
+input, select, textarea {
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  border: 1px solid #ff9800;
+  padding: 10px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #ffc107;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%;
+  max-width: 450px;
+  background-color: #1f1f1f;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  text-align: center;
+  margin: 20px auto;
 }
 
-.center {
+.screen {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-/* Global styling for hovedindhold */
 .main-content {
-  margin-top: 60px; /* Tilpas til Navbar'ens højde */
-  padding: 20px; /* Tilføj lidt indvendig afstand */
-  box-sizing: border-box; /* Sørg for, at padding ikke påvirker bredden */
+  margin-top: 60px; /* tilpas til Navbar */
+  padding: 20px;
+  box-sizing: border-box;
 }

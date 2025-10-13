@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./styles/global.css";
 import Navbar from "./components/Navbar";
 import HomeScreen from "./screens/HomeScreen";
@@ -12,46 +12,33 @@ import OverallLeaderboardScreen from "./screens/OverallLeaderboardScreen";
 import UserCompletedGamesScreen from "./screens/UserCompletedGamesScreen";
 import GameLeaderboardScreen from "./screens/GameLeaderboardScreen";
 import { AuthProvider } from "./contexts/AuthContext";
-
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = !!localStorage.getItem("username");
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-
-  return children;
-};
+import ProtectedRoute from "./components/ProtectedRoute"; // ← brug kun denne
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("username"));
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setIsAuthenticated(!!localStorage.getItem("username"));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
-
   return (
     <AuthProvider>
       <Router>
         <Navbar />
         <Routes>
-          {/* Offentlige ruter */}
-          <Route path="/" element={<HomeScreen />} />
+          {/* Offentlige sider */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <HomeScreen />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/signup" element={<SignUpScreen />} />
           <Route path="/login" element={<LoginScreen />} />
 
-          {/* Beskyttede ruter */}
+          {/* Beskyttede sider */}
           <Route
             path="/dashboard"
             element={
-              isAuthenticated ? <DashboardScreen /> : <Navigate to="/login" />
+              <ProtectedRoute>
+                <DashboardScreen />
+              </ProtectedRoute>
             }
           />
           <Route
