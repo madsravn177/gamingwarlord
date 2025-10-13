@@ -1,48 +1,89 @@
-.add-game-screen, .complete-game-screen, .user-completed-games-screen {
+.user-completed-games-screen {
   padding: 20px;
   text-align: center;
 }
 
-.add-game-screen form, .complete-game-screen form {
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-checkbox {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.filter-checkbox input {
+  margin-right: 10px;
+}
+
+.completed-games-list {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.add-game-screen input, .add-game-screen select,
-.complete-game-screen input, .complete-game-screen select {
-  width: 100%;
-}
-
-.add-game-screen button, .complete-game-screen button, .user-completed-games-screen button {
-  padding: 10px 20px;
-  background-color: #00bcd4;
-  color: #121212;
-}
-
-.add-game-screen button:hover, .complete-game-screen button:hover, .user-completed-games-screen button:hover {
-  background-color: #26c6da;
-  transform: scale(1.05);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
 .completed-game-card {
-  background-color: #1f1f1f;
-  border: 1px solid #ff9800;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 15px;
-  margin-bottom: 15px;
+  width: 100%;
+  max-width: 300px;
   text-align: center;
-  color: #e0e0e0;
+  color: var(--text-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.completed-game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.completed-game-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.completed-game-card p {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 5px;
 }
 
 .completed-game-card button {
-  background-color: #ff4d4d;
+  background-color: var(--secondary-color);
   color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .completed-game-card button:hover {
-  background-color: #ff1a1a;
+  background-color: var(--hover-color);
   transform: scale(1.05);
+}
+
+.no-games-message,
+.error-message {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.no-games-message {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.error-message {
+  color: var(--error-color, #e53935);
 }

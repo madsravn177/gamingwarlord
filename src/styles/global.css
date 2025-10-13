@@ -8,36 +8,45 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #121212;
-  color: #e0e0e0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
   line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Orbitron', sans-serif;
-  color: #ff9800;
+  font-family: 'Poppins', sans-serif;
+  color: var(--primary-color);
   margin-bottom: 15px;
 }
 
 a {
-  color: #00bcd4;
+  color: var(--primary-color);
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: #26c6da;
+  color: var(--hover-color);
 }
 
 button {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Inter', sans-serif;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.05);
 }
 
 input, select, textarea {
@@ -56,14 +65,23 @@ input:focus, select:focus, textarea:focus {
 }
 
 .container {
-  width: 100%;
-  max-width: 450px;
-  background-color: #1f1f1f;
-  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  text-align: center;
-  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .screen {
@@ -75,7 +93,21 @@ input:focus, select:focus, textarea:focus {
 }
 
 .main-content {
-  margin-top: 60px; /* tilpas til Navbar */
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 100px 20px 40px; /* Top padding så navbar ikke dækker */
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-color);
+}
+
+/* Responsivitet */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
 }

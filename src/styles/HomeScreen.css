@@ -1,33 +1,107 @@
 .home-screen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
   min-height: 100vh;
   padding-top: 60px;
+  background-color: var(--background-color);
 }
 
-.warlord-section, .recent-activities-section {
+/* Card Styling */
+.card {
   width: 100%;
   max-width: 600px;
   margin-top: 20px;
   padding: 15px;
-  background-color: #1f1f1f;
-  border: 2px solid #ff9800;
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
   border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.recent-activities-section li {
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Recent Activities List */
+.recent-activities-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-card {
   margin: 10px 0;
   padding: 10px;
-  background-color: #2a2a2a;
-  border: 1px solid #ff9800;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.recent-activities-section li:hover {
-  background-color: #333;
+.activity-card:hover {
+  background-color: var(--hover-color);
   transform: scale(1.02);
+}
+
+/* Error & No Results */
+.error-message,
+.no-results-message {
+  margin-top: 15px;
+  color: var(--error-color, #e53935);
+  font-weight: bold;
+}
+
+.points-info-box {
+  text-align: left;
+}
+
+.points-info-box h3 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.points-info-box p {
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+/* Info box for sværhedsgrad regler */
+.difficulty-rules-box {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--card-background);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.difficulty-rules-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.difficulty-rules-box h3 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.difficulty-rules-box ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.difficulty-rules-box li {
+  margin-bottom: 8px;
+  color: var(--text-color);
+  font-size: 0.95rem;
 }

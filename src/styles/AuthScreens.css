@@ -1,101 +1,100 @@
 /* AuthScreens.css - til login og signup */
 
 .screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #121212; /* Mørk baggrund */
-    color: #e0e0e0; /* Lys tekst */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--card-background);
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.container h1 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: var(--primary-color);
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container input {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--card-background);
+  color: var(--text-color);
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.container input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.container button {
+  padding: 12px 20px;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container button:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.05);
+}
+
+.container p {
+  margin-top: 20px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.container a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.container a:hover {
+  color: var(--hover-color);
+  text-decoration: underline;
+}
+
+/* Tilføjet responsivitet for mobile skærme */
+@media (max-width: 480px) {
   .container {
-    width: 100%;
-    max-width: 400px;
-    background-color: #1f1f1f; /* Mørk grå baggrund */
-    padding: 30px 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-    text-align: center;
+    padding: 25px 15px;
   }
-  
+
   .container h1 {
-    font-size: 2rem;
-    margin-bottom: 25px;
-    color: #ff9800; /* Neon-orange accent */
+    font-size: 1.75rem;
   }
-  
-  .container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .container input {
-    padding: 12px;
-    border: 1px solid #ff9800;
-    border-radius: 6px;
-    background-color: #1f1f1f;
-    color: #e0e0e0;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  
-  .container input:focus {
-    outline: none;
-    border-color: #ffc107; /* Lysere orange ved fokus */
-  }
-  
+
+  .container input,
   .container button {
-    padding: 12px 20px;
-    background-color: #ff9800;
-    color: #121212;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .container button:hover {
-    background-color: #ffc107;
-    transform: scale(1.05);
-  }
-  
-  .container p {
-    margin-top: 20px;
     font-size: 0.95rem;
-    color: #e0e0e0;
+    padding: 10px;
   }
-  
-  .container a {
-    color: #00bcd4;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-  
-  .container a:hover {
-    color: #26c6da;
-    text-decoration: underline;
-  }
-  
-  /* Tilføjet responsivitet for mobile skærme */
-  @media (max-width: 480px) {
-    .container {
-      padding: 25px 15px;
-    }
-  
-    .container h1 {
-      font-size: 1.75rem;
-    }
-  
-    .container input,
-    .container button {
-      font-size: 0.95rem;
-      padding: 10px;
-    }
-  }
-  
+}

@@ -1,41 +1,85 @@
 import React, { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import "../styles/AddGameScreen.css";
 
 function AddGameScreen() {
   const [newGameName, setNewGameName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleAddGame = async (e) => {
     e.preventDefault();
 
-    try {
-      // Tilføj spillet til Firestore
-      await addDoc(collection(db, "games"), {
-        name: newGameName,
-      });
+    // Nulstil beskeder
+    setMessage("");
+    setError("");
 
-      alert("Game added successfully!");
+    // Simpel validering
+    if (!newGameName.trim()) {
+      setError("Indtast venligst et gyldigt spilnavn.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const gamesRef = collection(db, "games");
+
+      // Tjek for dubletter (case-insensitive)
+      const q = query(
+        gamesRef,
+        where("name", "==", newGameName.trim())
+      );
+      const snapshot = await getDocs(q);
+
+      if (!snapshot.empty) {
+        setError("Dette spil findes allerede.");
+        setLoading(false);
+        return;
+      }
+
+      // Tilføj nyt spil
+      await addDoc(gamesRef, { name: newGameName.trim() });
+
+      setMessage("Spillet blev tilføjet succesfuldt!");
       setNewGameName("");
-    } catch (error) {
-      console.error("Error adding game:", error);
-      alert("Failed to add game. Please try again.");
+    } catch (err) {
+      console.error("Fejl ved tilføjelse af spil:", err);
+      setError("Der opstod en fejl. Prøv igen.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="main-content add-game-screen">
-      <h1>Add a New Game</h1>
+      <h1>Tilføj et nyt spil</h1>
+
       <form onSubmit={handleAddGame}>
         <input
           type="text"
-          placeholder="Game Name"
+          placeholder="Spilnavn"
           value={newGameName}
           onChange={(e) => setNewGameName(e.target.value)}
           required
         />
-        <button type="submit">Add Game</button>
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Tilføjer..." : "Tilføj spil"}
+        </button>
       </form>
+
+      {/* Feedback-beskeder */}
+      {message && <p className="success-message">{message}</p>}
+      {error && <p className="error-message">{error}</p>}
     </div>
   );
 }

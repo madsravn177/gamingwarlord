@@ -13,13 +13,24 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 
+/* Sørg for at indhold under navbar ikke skjules */
+body, .main-content, .home-screen {
+  padding-top: 70px; /* 60px navbar + lidt luft */
+}
+
 .navbar-links {
+  list-style: none; /* fjerner prikker */
   display: flex;
   gap: 20px;
+  padding: 0; /* fjerner standard padding på ul */
+  margin: 0;  /* fjerner standard margin på ul */
 }
+
 
 .navbar-links li a {
   color: #e0e0e0;
+  text-decoration: none;
+  font-weight: 500;
 }
 
 .navbar-links li a:hover {
@@ -37,6 +48,10 @@
   background-color: #ff9800;
   color: #121212;
   padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
 .logout-button:hover {
