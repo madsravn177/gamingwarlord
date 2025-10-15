@@ -13,6 +13,7 @@ import UserCompletedGamesScreen from "./screens/UserCompletedGamesScreen";
 import GameLeaderboardScreen from "./screens/GameLeaderboardScreen";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute"; // ← brug kun denne
+import ClipsPage from "./screens/ClipsPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           />
           <Route path="/signup" element={<SignUpScreen />} />
           <Route path="/login" element={<LoginScreen />} />
+          <Route path="/clips" element={<ClipsPage />} />
 
           {/* Beskyttede sider */}
           <Route

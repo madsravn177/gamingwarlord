@@ -24,9 +24,10 @@ function Navbar() {
         <li><Link to="/completed-games">Completed Games</Link></li>
         <li><Link to="/complete-game">Complete Game</Link></li>
         <li><Link to="/overall-leaderboard">Overall Leaderboard</Link></li>
+        <li><Link to="/clips">Clips</Link></li> {/* Tilføjet link til Clips */}
       </ul>
       <div className="navbar-user">
-        <span><strong>{username}</strong></span>
+        <span>{username}</span>
         <button className="logout-button" onClick={handleLogout}>
           Logout
         </button>

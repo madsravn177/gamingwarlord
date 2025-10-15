@@ -129,7 +129,7 @@ function HomeScreen() {
   <p>Rank 5 → 8 point</p>
   <p>Rank 6 → 6 point</p>
   <p>Rank 7 eller lavere → 0 point</p>
-  <p>Disse base points ganges med den valgte sværhedsgrad for at give de endelige earned points.</p>
+  <p>Standard points ganges med den valgte sværhedsgrad for at give de endelige points.</p>
   <p><em>Eksempel:</em> Rank 2 (18 point) × sværhedsgrad 3 → 54 point</p>
 </div>
 
